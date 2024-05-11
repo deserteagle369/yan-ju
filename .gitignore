@@ -1,0 +1,52 @@
+# .gitignore
+
+# 项目依赖模块
+node_modules/
+
+# 小程序编译后的文件
+miniprogram/dist/
+miniprogram/.temp/
+miniprogram/.webpack/
+miniprogram/compiled/
+miniprogram/build/
+
+# 小程序编译时生成的锁文件
+miniprogram/package-lock.json
+miniprogram/yarn.lock
+
+# 小程序编译时生成的日志文件
+miniprogram/*.log
+
+# 小程序编译时生成的配置文件
+miniprogram/*.swp
+
+# 小程序编译时生成的部署文件
+miniprogram/deploy.lock
+
+# 项目编译产物
+*.js
+*.css
+*.html
+
+# 编辑器和 IDE 的配置文件
+.vscode/
+.idea/
+
+# macOS 系统文件
+.DS_Store
+
+# Windows 系统文件
+Thumbs.db
+
+# Linux 系统文件
+*~
+
+# 编译型语言的编译产物
+*.psd
+*.sublime-project
+*.sublime-workspace
+
+# 项目中可能产生的其他临时文件
+*.log
+*.tmp
+temp/
