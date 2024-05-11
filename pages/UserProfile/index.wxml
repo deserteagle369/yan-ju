@@ -1,0 +1,19 @@
+  <view class="header" wx:if="{{isShowUserName}}">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" bindtap="updateAvatar"></image>
+    <text class="userinfo-nickname" bindtap="updateNickname">{{userInfo.nickName}}</text>
+    <text class="userinfo-nickname">id:{{shortenedOpenid}}</text>
+  </view>
+ <!--如果用户没有授权，显示登录按钮  -->
+<view wx:if="{{!isShowUserName}}" class="btn-login">
+  <button open-type="getUserInfo" lang="zh_CN" type="primary" bindgetuserinfo="onGotUserInfo">授权登录</button>
+</view>
+<button wx:if="{{isShowUserName}}" bindtap="loginOut">退出登录</button>
+  <view class="meal-history">团餐
+  <block wx:for="{{meals}}" wx:key="index">
+    <view class="meal-item" bindtap="goToMealDetail" data-meal-id="{{item._id}}">
+      <text>日期：{{item.date}}</text>
+      <text>团餐：{{item.mealName}}</text>
+      <text>状态：{{item.status}}</text>
+    </view>
+  </block>
+  </view>

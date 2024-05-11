@@ -1,0 +1,47 @@
+<view class="container">
+    <view class="search-bar">
+        <input class="search-input" placeholder="搜索团餐名称或日期"/>
+    </view>
+    <!-- 推荐团餐列表 -->
+    <view class="recommend-meal">
+      <view class="recommend-meal-title">推荐团餐</view>
+      <view wx:for="{{recommendedMeals}}" wx:key="id" bindtap="goToMealDetail" data-mealid="{{item._id}}">
+        <view class="recommend-meal-item">
+                <!-- 星级显示 -->
+            <view class="meal-rating">
+              <!-- 假设每个团餐有一个 mealRate 字段表示星级 -->
+              <block wx:for="{{item.mealRate}}" wx:key="idx">
+                <image src="/images/star-gold.png" class="star-icon" />
+              </block>
+              <!-- 如果需要显示未评分的星，可以添加以下代码 -->
+              <block wx:for="{{5 - item.mealRate}}" wx:key="idx">
+                <image src="/images/star-grey.png" class="star-icon" />
+              </block>
+            </view>
+            <text class="meal-name">{{item.mealName}}</text>
+            <!-- 菜品数量显示 -->
+            <view class="meal-dished-count">{{item.dishCount}}菜</view>
+            <view class="meal-dishes-count">{{item.participantCount}}人</view>
+          </view>
+      </view>
+    </view>
+    <button class="create-meal-btn" bindtap="createMeal">创建团餐</button>
+    <view class="current-meal">
+      <view class="current-meal-title">当前团餐</view>
+      <view class="current-meal-item" bindtap="goToMealDetail" data-mealid="{{currentMeal._id}}">
+        <view class="meal-date">{{currentMeal.date}}</view>
+        <view class="meal-name">{{currentMeal.mealName}}</view>
+        <view class="meal-dishes-count">{{currentMeal.dishCount}}菜</view>
+        <view class="meal-dishes-count">{{currentMeal.participantCount}}人</view>
+      </view>  
+    </view>
+    <view class="history-meals">
+      <view class="history-meal-title grey-text">历史团餐</view>
+      <view wx:for="{{historyMeals}}" wx:key="id" class="history-meal-item grey-text" bindtap="goToMealDetail" data-mealid="{{item._id}}" data-mealtype="history">
+        <view class="meal-date">{{item.date}}</view>
+        <view class="meal-name">{{item.mealName}}</view>
+        <view class="meal-dishes-count">{{item.dishCount}}菜</view>
+        <view class="meal-dishes-count">{{item.participantCount}}人</view>
+      </view>
+    </view>
+</view>

@@ -1,0 +1,117 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.search-bar {
+  margin: 10px;
+}
+.search-input {
+  width: 100%;
+  padding: 8px;
+}
+
+.recommend-meal {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: rgb(247, 237, 237);
+}
+.recommend-meal-title {
+  text-align: center;
+  color: orange;
+  font-weight: bold;
+}
+.recommend-meal-item {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  color:orange;
+}
+
+.recommend-meal-info {
+  display: flex;
+  align-items: center;
+}
+
+.recommend-meal-name {
+  margin-right: auto;
+  font-size: 16px;
+}
+.meal-ratings {
+  display: flex;
+}
+.star-icon {
+  width: 20px; /* 星形图标的尺寸 */
+  height: 20px;
+  margin-right: 2px;
+}
+/* 根据星级选择图标颜色 */
+.star-gold {
+  image: url('/images/star-gold.png');
+}
+
+.star-grey {
+  image: url('/images/star-gray.png');
+}
+
+.create-meal-btn {
+  background-color: #ffcc00;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+}
+
+/* 当前团餐的样式 */
+.current-meal {
+  margin-top: 10px;
+  background-color: rgb(255, 255, 255); /* 当前团餐的背景颜色 */
+}
+.current-meal-title {
+  text-align: center;
+  font-weight: bold;
+}
+
+.current-meal-item {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+.meal-date,
+.meal-name,
+.meal-dishes-count {
+  margin: 0 10px;
+}
+.footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+/* 历史团餐的样式 */
+.history-meal {
+  margin-top: 10px;
+  background-color: #f9f9f9; /* 历史团餐的背景颜色 */
+}
+.history-meal-title {
+  text-align: center;
+  font-weight: bold;
+}
+.history-meal-item {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 灰黑色文字的样式，用于历史团餐 */
+.grey-text {
+  color: rgb(141, 140, 140); /* 灰黑色文字，可根据需要调整 */
+}

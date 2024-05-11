@@ -1,0 +1,16 @@
+<!-- createMeal.wxml -->
+<view class="container">
+    <view class="input-group">
+        <text class="label">团餐名称：</text>
+        <input class="input-field" placeholder="请输入团餐名称" bindinput="inputMealName"/>
+    </view>
+    <view class="input-group">
+        <text class="label">日期：</text>
+        <input type="date" class="input-field" value="{{date}}" bindchange="bindDateChange"/>
+    </view>
+    <view class="input-group">
+        <text class="label">截止时间：</text>
+        <input type="time" class="input-field" value="{{deadline}}" bindchange="bindTimeChange"/>
+    </view>
+    <button class="submit-btn" bindtap="createMeal">创建团餐</button>
+</view>

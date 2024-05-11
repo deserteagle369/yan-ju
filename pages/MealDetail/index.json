@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "团餐详情",
+  "usingComponents": {
+    "mp-tabs": "@miniprogram-component-plus/tabs"
+  }
+}

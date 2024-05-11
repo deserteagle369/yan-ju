@@ -1,0 +1,79 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/discover/index",
+    "pages/register/login",
+    "pages/register/bindPhone",
+    "pages/testLogin/index",
+    "pages/family/index",
+    "pages/dishes/index",
+    "pages/dishesSummit/index",
+    "pages/createMeal/index",
+    "pages/MealDetail/index",
+    "pages/addDishesToMeal/index",
+    "pages/ingredients/index",
+    "pages/MenuPage/index",
+    "pages/UserProfile/index",
+    "pages/FamilyMembers/index",
+    "pages/MealSummary/index",
+    "pages/Feedback/index",
+    "pages/getOpenId/index",
+    "pages/getMiniProgramCode/index",
+    "pages/deployService/index",
+    "pages/createCollection/index",
+    "pages/uploadFile/index",
+    "pages/selectRecord/index",
+    "pages/updateRecord/index",
+    "pages/updateRecordResult/index",
+    "pages/updateRecordSuccess/index",
+    "pages/sumRecord/index",
+    "pages/sumRecordResult/index",
+    "pages/cloudBackend/index",
+    "pages/singleTemplate/index",
+    "pages/web/index",
+    "pages/setting/setting"
+  ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-selected.png"
+      },
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现",
+        "iconPath": "images/discover.png",
+        "selectedIconPath": "images/discover-selected.png"
+      },
+      {
+        "pagePath": "pages/dishes/index",
+        "text": "菜品",
+        "iconPath": "images/dish.png",
+        "selectedIconPath": "images/dish-selected.png"
+      },
+      {
+        "pagePath": "pages/UserProfile/index",
+        "text": "我的",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my-selected.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "位置信息权限"
+    }
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

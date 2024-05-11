@@ -1,0 +1,268 @@
+/* 容器样式 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+/* 返回按钮样式 */
+.back-btn-area {
+  margin-bottom: 20px;
+}
+/* 轮播图样式 */
+.meal-swiper {
+  width: 100%;
+  height: auto;
+}
+.swiper-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.swiper-dish-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+}
+/* 团餐信息样式 */
+.meal-info {
+  display: flex;
+  background: #f0f0f0;
+  padding: 15px;
+  font-size: 12px;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+}
+.meal-name,
+.meal-date,
+.meal-deadline {
+  margin: 5px 0;
+  font-weight: bold;
+  color: #333;
+}
+/* 菜品列表样式 */
+.dishes-list {
+  margin: 5px;
+  font-size: 14px;
+  width: 100%; /* 或者其他您希望的宽度 */
+  max-width: 800px; /* 您可以设置一个最大宽度 */
+  margin: 0 auto; /* 如果需要居中显示 */
+}
+.list-dish-item {
+  margin: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+.list-dish-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+.list-dish-info {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  padding: 5px;
+  justify-content: center;
+  text-align: center;
+  line-height: 20px;
+}
+
+.list-dish-name {
+  font-size: 14px;
+  padding: 5px;
+  font-weight: bold;
+}
+.list-quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quantity-btn {
+  width: 24px; /* 图标宽度 */
+  height: 24px; /* 图标高度 */
+  margin: 0 5px; /* 图标间距 */
+}
+.list-quantity {
+  margin: 0 5px;
+}
+
+.list-dish-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+/* 搜索框及搜索图标样式 */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+  padding: 0 20px 0 10px;
+  font-size: 16px;
+  line-height: 40px;
+  border: none;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  width: 24px;
+  height: 24px;
+}
+
+.search-icon image {
+  width: 100%;
+  height: 100%;
+}
+/* 搜索结果列表样式 */
+/* 添加与<view class="add-dishes-container">对应的样式 */
+.add-dishes-container {
+  /* 根据需要设置容器的基本样式 */
+  margin: 0%;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 5px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* 根据实际需求调整容器宽度、高度等属性 */
+  height: 300px; /* 示例值，替换为实际高度 */
+  max-width: 100%; /* 保持响应式，不超过父容器宽度 */
+
+  /* 其他样式，如字体、颜色、间距等 */
+  font-family: Arial, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 如果需要为容器内部的元素添加样式，可以继续添加如下示例 */
+.add-dishes-container .title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.add-dishes-container .description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 0px;
+}
+
+.add-dishes-container .action-button {
+  /* 样式定义 */
+}
+/* 标签栏样式 */
+.filter-tabs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.filter-tab {
+  font-size: 16px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.filter-tab.active {
+  color: #333;
+  font-weight: bold;
+}
+
+/* 根据当前筛选模式展示内容的容器样式 */
+.search-result-area,
+.category-selection-area {
+  /* 根据需要设置通用的布局、间距、背景色等样式 */
+  padding: 10px;
+  background-color: #f8f8f8;
+}
+
+/* ... 其他已有样式不变 ... */
+.search-result-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+   /* 新增：为搜索结果项添加相对定位，便于内部元素绝对定位 */
+   position: relative;
+}
+
+.search-result-item .category {
+  flex: 0 0 auto;
+  min-width: 30px;
+  margin-right: 5px;
+  text-align: left;
+}
+
+.search-result-item .dish-image {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 5px;
+}
+
+.search-result-item .dish-info {
+  flex: 1;
+}
+
+.search-result-item .dish-name {
+  max-width: 60px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.search-result-item .dish-spicy,
+.search-result-item .dish-time {
+  color: #999;
+  font-size: 14px;
+  text-align: left;
+  max-width: 20px;
+}
+
+/* 将“添加到本餐”文字按钮改为图标按钮 */
+.add-to-meal-btn-icon {
+  position:  relative;
+  width: 32px;
+  height: 32px;
+  margin: 20px;
+}
+
+.add-to-meal-btn-icon image {
+  width: 32px;
+  height: 32px;
+}

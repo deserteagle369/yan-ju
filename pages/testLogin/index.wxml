@@ -1,0 +1,2 @@
+<!-- pages/testLogin/testLogin.wxml -->
+<button bindtap="testLogin">微信登录</button>

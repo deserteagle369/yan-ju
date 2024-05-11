@@ -1,0 +1,31 @@
+<!-- MealDetail 页面 -->
+<view class="meal-detail">
+  <!-- 菜品搜索框 -->
+  <input placeholder="搜索菜品" class="search-input" bindinput="onSearchInput" />
+  
+  <!-- 搜索结果区域 -->
+  <view wx:if="{{noResults}}">
+    <button type="primary" bindtap="redirectToSubmit">添加菜品</button>
+  </view>
+  <scroll-view wx:else>
+    <!-- 菜品分类 -->
+    <view class="category-list">
+      <block wx:for="{{categories}}" wx:key="category">
+        <view class="category">{{category.name}}</view>
+        <view class="dish-list">
+          <block wx:for="{{category.dishes}}" wx:key="dish">
+            <view class="dish-item">
+              <image src="{{dish.image}}" class="dish-image"></image>
+              <text class="dish-name">{{dish.name}}</text>
+              <text class="dish-spicy">{{dish.spiciness}}</text>
+              <text class="dish-cooktime">{{dish.cookingTime}}</text>
+              <button class="add-dish-button" bindtap="addDishToMeal">{{dish.addToMealText}}</button>
+            </view>
+          </block>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- dishSummit 页面 WXML 略，需包含表单元素用于提交新菜品信息 -->

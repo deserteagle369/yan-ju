@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@babel/runtime": "^7.24.5",
+    "@miniprogram-component-plus/tabs": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.24.3"
+  }
+}

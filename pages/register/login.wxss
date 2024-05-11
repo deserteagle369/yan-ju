@@ -1,0 +1,50 @@
+/* Aligns everything to the center */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8f8f8;
+}
+
+/* Styles the WeChat login button */
+.wechat-login {
+  width: 80%;
+  background-color: #07c160;
+  color: white;
+  padding: 10px 0;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+}
+
+/* Adds spacing and styles for text links or additional options */
+.divider {
+  color: #000;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* General button styling, can be reused for other purposes */
+.button {
+  width: 80%;
+  background-color: #1e90ff;
+  color: white;
+  padding: 10px 0;
+  border-radius: 20px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
+/* Additional styling as needed for other elements */
+.text-link {
+  color: #576b95;
+  font-size: 14px;
+  text-decoration: none;
+  margin-top: 10px;
+}

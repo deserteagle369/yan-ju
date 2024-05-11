@@ -1,0 +1,54 @@
+<view class="container">
+    <!-- 菜品名称输入 -->
+    <view class="input-group">
+        <text class="label">菜品名称：</text>
+        <input class="input-field" placeholder="请输入菜品名称" bindinput="inputName"/>
+    </view>
+    <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
+    <view class="category-selector">选择菜品分类：{{selectedCategory}}</view>
+</picker>
+    <!-- 已选食材列表 -->
+    <view class="selected-ingredients">
+        <block wx:for="{{selectedIngredients}}" wx:key="*this">
+            <view class="selected-ingredient-item">
+              {{item.category}} > {{item.subcategory}} > {{item.ingredient}}
+              <text class="remove-ingredient" data-index="{{index}}" bindtap="removeIngredient">删除</text>
+            </view>
+        </block>
+    </view>
+    <!-- 主要食材选择 -->
+    <view class="input-group">
+        <text class="label">选择食材：</text>
+        <picker mode="multiSelector" range="{{ingredientsCategories}}" value="{{selectedIngredientsIndex}}" bindchange="onPickIngredient" bindcolumnchange="onColumnChange">
+            <view class="picker">{{selectedIngredients | joinIngredients}}</view>
+        </picker>
+    </view>
+
+    <!-- 烹饪时间输入 -->
+    <view class="input-group">
+      <text class="label">烹饪时间：</text>
+      <picker mode="selector" range="{{cookingTimes}}" bindchange="bindTimeChange">
+        <view class="picker">{{time || '请选择烹饪时间'}}</view>
+      </picker>
+    </view>
+
+    <view class="input-group">
+      <button type="primary" class="upload-btn" bindtap="uploadImage">上传图片</button>
+      <image wx:if="{{imagePath}}" src="{{imagePath}}" style="width: 100px; height: 100px;"></image>
+
+    </view>
+
+    <view class="input-group" wx:if="{{dishImageUrl}}">
+      <image style="width: 100px; height: 100px;" src="{{dishImageUrl}}" mode="aspectFit"></image>
+    </view>
+
+    <!-- 辣度选择 -->
+    <view class="input-group">
+        <text class="label">辣度选择：</text>
+        <picker mode="selector" range="{{spicyLevels}}" bindchange="pickSpicy">
+            <view class="picker">{{selectedSpicyLevel}}</view>
+        </picker>
+    </view>
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="submitDish">提交菜品</button>
+</view>

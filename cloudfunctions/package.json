@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "wx-server-sdk": "^2.7.2"
+  },
+  "name": "cloudfunctions",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
