@@ -2,6 +2,9 @@
 
 # 项目依赖模块
 node_modules/
+/miniprogram_npm/
+/dist/
+/project.config.json
 
 # 小程序编译后的文件
 miniprogram/dist/
