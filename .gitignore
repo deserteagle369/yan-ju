@@ -1,56 +1,48 @@
-# .gitignore
-
-# О©╫О©╫д©О©╫О©╫О©╫О©╫дёО©╫О©╫
+# ╨Жбт node_modules д©б╪
 node_modules/
-/miniprogram_npm/
-/dist/
-/project.config.json
+miniprogram_npm/
+dist/
 
-# п║О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╪О©╫
+# ╨Жбтп║ЁлпР╠ЮрКиЗЁи╣днд╪Ч
 miniprogram/dist/
 miniprogram/.temp/
 miniprogram/.webpack/
 miniprogram/compiled/
 miniprogram/build/
 
-# п║О©╫О©╫О©╫О©╫О©╫О©╫О©╫й╠О©╫О©╫О©╫и╣О©╫О©╫О©╫О©╫д╪О©╫
-miniprogram/package-lock.json
-miniprogram/yarn.lock
+# ╨Жбт package-lock.json ╨м yarn.lock нд╪Ч
+# package-lock.json
+yarn.lock
 
-# п║О©╫О©╫О©╫О©╫О©╫О©╫О©╫й╠О©╫О©╫О©╫и╣О©╫О©╫О©╫ж╬О©╫д╪О©╫
-miniprogram/*.log
+# ╨Жбт log нд╪Ч
+*.log
 
-# п║О©╫О©╫О©╫О©╫О©╫О©╫О©╫й╠О©╫О©╫О©╫и╣О©╫О©╫О©╫О©╫О©╫О©╫д╪О©╫
-miniprogram/*.swp
+# ╨Жбтаый╠нд╪Чё╛хГ╠ЮрКиЗЁи╣д *.swp нд╪Ч
+*.swp
 
-# п║О©╫О©╫О©╫О©╫О©╫О©╫О©╫й╠О©╫О©╫О©╫и╣д╡О©╫О©╫О©╫О©╫д╪О©╫
-miniprogram/deploy.lock
+# ╨Жбт╡©йПй╠иЗЁи╣днд╪Ч
+deploy.lock
 
-# О©╫О©╫д©О©╫О©╫О©╫О©╫О©╫О©╫О©╫
-*.js
-*.css
-*.html
 
-# О©╫Ю╪╜О©╫О©╫О©╫О©╫ IDE О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╪О©╫
+# ╨Жбт IDE еДжцнд╪Ч
 .vscode/
 .idea/
 
-# macOS о╣мЁО©╫д╪О©╫
+# ╨Жбт macOS о╣мЁиЗЁи╣д .DS_Store нд╪Ч
 .DS_Store
 
-# Windows о╣мЁО©╫д╪О©╫
+# ╨Жбт Windows о╣мЁиЗЁи╣д Thumbs.db нд╪Ч
 Thumbs.db
 
-# Linux о╣мЁО©╫д╪О©╫
+# ╨Жбт Linux о╣мЁиЗЁи╣даый╠нд╪Ч
 *~
 
-# О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫т╣д╠О©╫О©╫О©╫О©╫О©╫О©╫
+# ╨ЖбтфДкШ©идэиЗЁи╣д╠ЮрК╡ЗнОё╛хГ *.psd ╨м IDE оНд©нд╪Ч
 *.psd
 *.sublime-project
 *.sublime-workspace
 
-# О©╫О©╫д©О©╫п©О©╫О©╫э╡О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫й╠О©╫д╪О©╫
+# ╨ЖбтоНд©жп©идэ╡ЗиЗ╣дфДкШаый╠нд╪Ч
 *.log
 *.tmp
 temp/
-node_modules
