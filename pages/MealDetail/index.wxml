@@ -69,7 +69,7 @@
                             <text class="dish-spicy">{{item.selectedSpicyLevel}}</text>
                             <text class="dish-time">{{item.time}}</text>
                             <view class="add-to-meal-btn-icon">
-                                <image src="../../images/addto.png" bindtap="addToMeal" data-item="{{item}}"/>
+                                <image src="../../images/addto.png" bindtap="clickAddBtn" data-item="{{item}}"/>
                             </view>
                         </view>
                     </view>
