@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@babel/runtime": "^7.24.5",
-    "@miniprogram-component-plus/tabs": "^1.0.0"
+    "@miniprogram-component-plus/tabs": "^1.0.0",
+    "we-cropper": "^1.3.8",
+    "wx-server-sdk": "^2.5.3"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.24.3"

@@ -1,3 +1,5 @@
+//当前页面设置分享信息
+
 Page({
   data: {
     mealDetail: {},
@@ -23,7 +25,8 @@ Page({
     participantOrders: [],
     mealOrder: {  
       dishOrders: [], // 初始时菜品订单为空数组 
-    }
+    },
+    currentMealDishes: [], // 当前团餐下的菜品
   },
   
   methods: {
@@ -39,7 +42,7 @@ Page({
     this.setData({
       participantOrder: {
         orders: []
-      }
+      },
     });
     const app = getApp();
     let openid = app.globalData.openid;
@@ -90,52 +93,72 @@ Page({
     // 使用云函数获取团餐详情
     this.getMealDetails(mealId);
   },
+
   increaseQuantity: function(e) {  
+    console.log("increaseQuantity被调用，参数为：",e.currentTarget.dataset);
+    console.log("this.data:",this.data);
     let dishes = this.data.dishes;   
-    let currentDishIndex = e.currentTarget.dataset.index;
     const mealId = this.data.mealId;
     const openid = this.data.user.openid;
-    const dishId = dishes[currentDishIndex]._id;
-    const dishQuantity = dishes[currentDishIndex].dishQuantity;
-    console.log("increaseQuantity for dishes: ",dishes,"currentDishIndex:",currentDishIndex,"dishId:",dishId,"dishQuantity:",dishQuantity);
-    if (currentDishIndex >= 0 && currentDishIndex < dishes.length) {
-      const originalDishQuantity = dishes[currentDishIndex].dishQuantity;  
-      dishes[currentDishIndex].dishQuantity++; 
-      console.log("new dishQuantity:",dishes[currentDishIndex].dishQuantity);
+    const dishId = e.currentTarget.dataset.dishId;
+    const dishQuantity = e.currentTarget.dataset.dishQuantity;
+    let dishToUpdate = dishes.find(dish => dish._id === dishId);  
+    if (dishToUpdate) {  
+      // 菜品存在，增加数量  
+      dishToUpdate.dishQuantity++;  
       this.setData({  
-        dishes: dishes  
+        dishes: dishes // 注意：这里直接设置dishes可能不会触发视图更新，因为数组引用没有变  
       });  
-    };
-    console.log("准备调用updateDishQuantity函数，参数为：","mealId:",mealId,"dishId:",dishId,"dishQuantity:",dishQuantity,"openid:",openid);
-    const newDishQuantity = dishes[currentDishIndex] ? dishes[currentDishIndex].dishQuantity : null; // 如果菜品存在，获取更新后的数量；否则传递 null
-    this.updateDishQuantity(mealId,openid,dishId,newDishQuantity);
+      this.updateDishQuantity(mealId, openid, dishId, dishToUpdate.dishQuantity); 
+    } else {  
+      // 菜品不存在，添加到数组中
+      let dishToUpdate = this.data.searchedDishes.find(dish => dish._id === dishId);  
+      dishes.push({  
+        _id: dishId,  
+        dishImageUrl: dishToUpdate.dishImageUrl,  
+        dishName: dishToUpdate.dishName,  
+        dishQuantity: 1,
+        selectedCategory: dishToUpdate.selectedCategory,
+        seleectedSpicyLevel: dishToUpdate.seleectedSpicyLevel,
+        time: dishToUpdate.time,
+      });
+      this.addToMeal(dishId, 1);  
+    }
+    this.setData({  
+        dishes: [...dishes]  
+    });
+    // 调用后端更新数量的函数
   },
   decreaseQuantity: function(e) {    
     let dishes = this.data.dishes;    
-    let currentDishIndex = e.currentTarget.dataset.index;  
     const mealId = this.data.mealId;
     const openid = this.data.user.openid;
-    const dishId = dishes[currentDishIndex]._id;
-    const dishQuantity = dishes[currentDishIndex].dishQuantity;
-    console.log("decreaseQuantity for dishes: ",dishes,"currentDishIndex:",currentDishIndex,"dishId:",dishId,"dishQuantity:",dishQuantity,"openid:",openid);
-    if (currentDishIndex >= 0 && currentDishIndex < dishes.length) {    
-      const originalDishQuantity = dishes[currentDishIndex].dishQuantity;  
-      if (originalDishQuantity > 0) {    
-        dishes[currentDishIndex].dishQuantity -= 1;    
-        if (dishes[currentDishIndex].dishQuantity === 0) {  
-          // 数量已减到0，删除菜品  
-          dishes.splice(currentDishIndex, 1);  
-        }  
-      };
-      // console.log("new dishQuantity:",dishes[currentDishIndex].dishQuantity);  
-      // 统一更新数据，无论是否删除了菜品  
-      this.setData({    
-        dishes: dishes,    
-      });    
-    }
-    console.log("准备调用updateDishQuantity函数，参数为：","mealId:",mealId,"dishId:","openid:",openid,"dishId:",dishId,"dishQuantity:",dishQuantity);
-    const newDishQuantity = dishes[currentDishIndex] ? dishes[currentDishIndex].dishQuantity : 0; // 如果菜品存在，获取更新后的数量；否则传递 null
-    this.updateDishQuantity(mealId,openid,dishId,newDishQuantity)   
+    const dishId = e.currentTarget.dataset.dishId;
+    const dishQuantity = e.currentTarget.dataset.dishQuantity;
+    let dishToUpdate = dishes.find(dish => dish._id === dishId);  
+    console.log("decreaseQuantity for dishes: ",dishes,"dishId:",dishId,"dishQuantity:",dishQuantity,"openid:",openid);
+    if (dishToUpdate) {  
+      // 菜品存在，减少数量  
+      if (dishToUpdate.dishQuantity < 2) { 
+        // 数量为1，从数组中移除
+         dishes = dishes.filter(dish => dish._id !== dishId);    
+      }
+      dishToUpdate.dishQuantity--; 
+      this.setData({  
+          dishes: dishes // 注意：这里直接设置dishes可能不会触发视图更新，因为数组引用没有变  
+      });  
+      console.log("dishes:", dishes);
+      // 为了确保视图更新，您可能需要使用扩展运算符或concat等方法来创建一个新数组  
+      this.setData({  
+          dishes: [...dishes] // 或者使用其他方法来创建一个新的数组副本  
+      });  
+      console.log("dishes:", dishes);
+      // 调用后端更新数量的函数  
+      this.updateDishQuantity(mealId, openid, dishId, dishToUpdate.dishQuantity);  
+    } else {  
+      // 菜品不存在，处理错误情况（可选）  
+      console.error('Dish not found with ID:', dishId);  
+    } 
   },
   updateDishQuantity: function(mealId,openid, dishId, dishQuantity) {
     console.log('启动函数updateDishQuantity，参数为：', "mealId:", mealId, "openid:",openid,"dishId:", dishId, "dishQuantity:", dishQuantity);
@@ -174,7 +197,8 @@ Page({
             dishCount: data.dishCount,  
             participantCount: data.participantCount,  
             // 如果需要菜品详细信息，也在这里设置  
-            dishes: data.dishes  
+            dishes: data.dishes,
+            currentMealDishes: data.dishes.map(dish => dish._id),  
           });  
         console.log("云函数返回的data:",data);
         console.log("云函数返回的dishes:",data.dishes);
@@ -227,7 +251,7 @@ Page({
     console.log("searchDishes关键字:",searchKeyword)
     try {
       const result = await wx.cloud.callFunction({
-        name: 'getDishes',
+        name: 'cloudGetDishesByName',
         data: {
           keyword: searchKeyword,
         },
@@ -249,6 +273,10 @@ Page({
       });
     }
   },
+  isDishInMeal: function(dishId) {
+    console.log('Current Meal Dishes:', this.data.currentMealDishes);
+    return this.data.currentMealDishes.includes(dishId);
+  },
   selectCategory: function(e) {
     const categoryId = e.currentTarget.dataset.categoryId;
     this.filterDishesByCategory(categoryId);
@@ -260,7 +288,7 @@ Page({
   clickAddBtn: function(e) {
     var dishId = e.currentTarget.dataset.dishId;
     var quantityToAdd = 1;
-    this.addToMeal(dishId, quantityToAdd);
+    this.addToMeal(dishId);
   },  
 
   addToMeal: function(dishId, quantityToAdd) {
@@ -279,13 +307,13 @@ Page({
     }
   
     // 查找匹配的菜品并更新数量  
-    const updatedDishes = dishes.map(dish => {  
+    const updatedDishes = this.data.dishes.map(dish => {  
     if (dish.dishId === dishId) {  
       dishFound = true;  
       // 如果找到了匹配的菜品，增加数量  
       const updatedDish = { ...dish,dishQuantity: dish.dishQuantity + quantityToAdd };
       console.log("updatedDishes", updatedDishes);
-      return updatedDish;  
+      return {...dish, dishQuantity: dish.dishQuantity + 1};  
     }
     return dish;
     });  
@@ -349,4 +377,58 @@ Page({
       url: '/pages/DishSummit/index',
     })
   },
+
+ isValidMealId:function(mealId) {
+  // 这里可以添加更复杂的规则，例如检查mealId是否符合特定的格式
+  // 例如：检查mealId是否只包含字母、数字、横杠和下划线
+  return /^[a-zA-Z0-9\-_]+$/.test(mealId);
+},
+
+// 假设存在一个用于检查dishes数组和dishImageUrl有效性的函数  
+getFirstValidImageUrl: async function(dishes) {  
+  try {  
+    // 假设 getSignedImageUrl 返回一个 Promise  
+    const signedUrl = await getSignedImageUrl(dishes[0].dishImageUrl);  
+    // 检查数组长度和URL是否有效  
+    if (dishes.length > 0 && isValidUrl(signedUrl)) {  
+      return signedUrl;  
+    }  
+  } catch (error) {  
+    // 在这里处理可能的错误，比如网络错误或 getSignedImageUrl 抛出的异常  
+    console.error('Error fetching signed image URL:', error);  
+  }  
+  // 返回一个默认的图片URL  
+  return 'https://example.com/default-image.jpg';  
+},
+
+async shareImage() {
+  const signedUrl = await getSignedImageUrl(this.data.dishImageUrl);
+  // 使用signedUrl进行分享或其他操作
+},
+onShareAppMessage: function() {
+  // 检查mealId的合法性
+  if (!isValidMealId(this.data.mealId)) {
+    console.error('Invalid mealId');
+    return;
+  }
+
+  // 安全地构建分享的标题和描述
+  const safeNickName = escapeHtml(nickName);
+  const safeMealName = escapeHtml(mealName);
+
+  return {
+    title: `来看看${safeNickName}分享的美食吧！`,
+    path: `/pages/MealDetail/index?mealId=${encodeURIComponent(this.data.mealId)}`,
+    desc: `${safeMealName}`,
+    imageUrl: getFirstValidImageUrl(dishes),
+    success: function(res) {
+      console.log('分享成功');
+      // 可以在这里增加进一步的用户反馈或操作
+    },
+    fail: function(res) {
+      console.log('分享失败');
+      // 可以在这里增加进一步的错误处理或用户反馈
+    }
+  }
+}
 });

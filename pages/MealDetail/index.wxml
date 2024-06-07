@@ -22,15 +22,15 @@
     <view class="list-dish-item">
       <image class="list-dish-img" src="{{item.dishImageUrl}}" />
       <view class="list-dish-info">
-        <text class="list-selected-category">{{item.selectedCategory}}</text>
+        <text class="list-dish-selected-category">{{item.selectedCategory}}</text>
         <text class="list-dish-name">{{item.dishName}}</text>
-        <text class="list-spicy-level">{{item.selectedSpicyLevel}}</text>
-        <text class="list-cook-time">{{item.time}}</text>
+        <text class="list-dish-spicy-level">{{item.selectedSpicyLevel}}</text>
+        <text class="list-dish-cook-time">{{item.time}}</text>
         <!-- 加号和减号图标 -->
         <view class="list-quantity-control">
-          <image src="/images/minus.png" class="quantity-btn" bindtap="decreaseQuantity" data-index="{{index}}"/>
+          <image src="/images/minus.png" class="quantity-btn" bindtap="decreaseQuantity" data-dish-id="{{item._id}}"/>
           <text class="list-quantity">{{item.dishQuantity}}</text>
-          <image src="/images/add.png" class="quantity-btn" bindtap="increaseQuantity" data-index="{{index}}"/>
+          <image src="/images/add.png" class="quantity-btn" bindtap="increaseQuantity" data-dish-id="{{item._id}}"/>
         </view>
         <text class="added-by">{{item.addedBy}}</text>
       </view>
@@ -61,18 +61,25 @@
                 </view>
                 <!-- 搜索结果展示区 -->
                 <view wx:if="{{showSearchResult}}">
-                    <view wx:for="{{searchedDishes}}" wx:key="dish">
-                        <view class="search-result-item">
-                            <view class="category">{{item.selectedCategory}}</view>
-                            <image class="dish-image" src="{{item.dishImageUrl}}"></image>
-                            <text class="dish-name">{{item.dishName}}</text>
-                            <text class="dish-spicy">{{item.selectedSpicyLevel}}</text>
-                            <text class="dish-time">{{item.time}}</text>
-                            <view class="add-to-meal-btn-icon">
-                                <image src="../../images/addto.png" bindtap="clickAddBtn" data-item="{{item}}"/>
+                  <view class="dishes-list">
+                    <block wx:for="{{searchedDishes}}" wx:key="dishID">
+                        <view class="list-dish-item">
+                          <image class="list-dish-img" src="{{item.dishImageUrl}}"></image>
+                          <view class="list-dish-info">
+                            <view class="list-dish-selected-category">{{item.selectedCategory}}</view>                            
+                            <text class="list-dish-name">{{item.dishName}}</text>
+                            <text class="list-dish-spicy-level">{{item.selectedSpicyLevel}}</text>
+                            <text class="list-dish-cook-time">{{item.time}}</text>
+                            <!-- 加号和减号图标 -->
+                            <view class="list-quantity-control">
+                              <image src="/images/minus.png" class="quantity-btn" wx:if="{{isDishInMeal(item._id)}}" bindtap="decreaseQuantity" data-dish-id="{{item._id}}" />
+                              <text class="list-quantity">{{item.dishQuantity}}</text>
+                              <image src="/images/add.png" class="quantity-btn" bindtap="increaseQuantity" data-dish-id="{{item._id}}"/>
                             </view>
-                        </view>
-                    </view>
+                          </view>
+                        </view>  
+                    </block>
+                  </view>
                     <view wx:if="{{!hasSearchResult}}">
                         <text>未找到相关菜品，您可以<a bindtap="redirectToDishLibrary">前往菜品库添加新菜品</a></text>
                     </view>

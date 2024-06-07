@@ -8,6 +8,7 @@
     "pages/family/index",
     "pages/dishes/index",
     "pages/dishesSummit/index",
+    "pages/dishDetail/index",
     "pages/createMeal/index",
     "pages/MealDetail/index",
     "pages/addDishesToMeal/index",
@@ -31,7 +32,8 @@
     "pages/cloudBackend/index",
     "pages/singleTemplate/index",
     "pages/web/index",
-    "pages/setting/setting"
+    "pages/setting/setting",
+    "pages/cropper/cropper"
   ],
   "tabBar": {
     "list": [

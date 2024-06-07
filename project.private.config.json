@@ -7,6 +7,41 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/dishDetail/index",
+          "pathName": "pages/dishDetail/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/dishesSummit/index",
+          "pathName": "pages/dishesSummit/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/cropper/cropper",
+          "pathName": "pages/cropper/cropper",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/cropper/cropper",
+          "pathName": "pages/cropper/cropper",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/dishesSummit/cropper-example",
+          "pathName": "pages/dishesSummit/cropper-example",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "pages/MealDetail/index",
           "pathName": "pages/MealDetail/index",
           "query": "mealId=9fe3c0fd66374314004a0d6d75eb5618",
@@ -79,13 +114,6 @@
         {
           "name": "pages/Meal/index",
           "pathName": "pages/Meal/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/dishesSummit/index",
           "query": "",
           "launchMode": "default",
           "scene": null

@@ -3,12 +3,12 @@ async function fetchMeals(type) {
   console.log(`启动 fetchMeals 函数，参数为：${type}`);
   try {
     const result = await wx.cloud.callFunction({
-      name: 'getMealsByStatus',
+      name: 'cloudGetMealsByStatus',
       data: {
         status: type,
       },
     });
-    console.log(`fetchMeals 返回结果为：${JSON.stringify(result)}`);
+    console.log("fetchMeals 返回结果为：",result);
 
     if (result.errMsg !== 'cloud.callFunction:ok') {
       console.error('云函数调用失败');
@@ -27,13 +27,14 @@ async function fetchTopRatedMeals() {
   console.log("启动 fetchTopRatedMeals 函数");
   try {
     const result = await wx.cloud.callFunction({
-      name: 'getMealsByRate',
+      name: 'cloudGetMealsByRate',
       data: {
         sortBy: 'mealRate', // 指定按 mealRate 排序
         sortOrder: 'desc',  // 降序排序
       },
     });
-    console.log(`fetchTopRatedMeals 返回结果为：${JSON.stringify(result)}`);
+    console.log("fetchTopRatedMeals 返回结果为：", result);
+
 
     if (result.errMsg !== 'cloud.callFunction:ok') {
       console.error('云函数调用失败');
@@ -133,14 +134,14 @@ Page({
     if (mealId) {
          wx.navigateTo({
            url: '/pages/MealDetail/index?mealId=' + mealId,
-             success: function(res) {
-    console.log('跳转成功');
-  },
-  fail: function(res) {
-    console.log('跳转失败', res);
-  }
-          });
-      } else {
+          success: function(res) {
+            console.log('跳转成功');
+            },
+          fail: function(res) {
+            console.log('跳转失败', res);
+          }
+        });
+    } else {
          console.error('mealId not found or is empty');
     }
   },
@@ -158,4 +159,12 @@ Page({
       url: '/pages/createMeal/index',
     })
   },
+  //分享当前页面
+  onShareAppMessage: function() {
+    return {
+      title: '团餐助手',
+      path: '/pages/index/index',
+      imageUrl: '/assets/yan-ju-meal.jpg'
+    }
+  },  
 });

@@ -1,0 +1,64 @@
+/* pages/dishDetail/index.wxss */  
+.container {    
+  display: flex;    
+  flex-direction: column;    
+  padding: 20rpx;    
+}    
+    
+.dish-image {    
+  width: 100%;    
+  text-align: center;    
+  margin-bottom: 20rpx;    
+}    
+    
+.dish-image image {    
+  width: 100%;    
+  max-height: 300rpx;    
+  object-fit: cover;    
+  border-radius: 10rpx; /* 添加边框圆角 */  
+}    
+    
+.dish-info {    
+  display: flex;  
+  flex-direction: column;  
+  margin-bottom: 20rpx; /* 添加底部间距 */  
+  border-bottom: 1rpx solid #ccc; /* 添加底部边框 */  
+  padding-bottom: 20rpx; /* 添加内部底部间距 */  
+}  
+  
+.dish-author {  
+  display: flex;  
+  align-items: center;  
+  margin-bottom: 10rpx; /* 昵称和头像下方的间距 */  
+}  
+  
+.dish-author-avatar {  
+  width: 60rpx;  
+  height: 60rpx;  
+  border-radius: 50%; /* 头像圆角 */  
+  margin-right: 10rpx; /* 头像和昵称之间的间距 */  
+}  
+  
+.dish-author-name {  
+  font-size: 40rpx;  
+  font-weight: bold; /* 昵称加粗 */  
+}  
+  
+.dish-name {    
+  font-size: 40rpx; /* 增大字体大小 */  
+  font-weight: bold;    
+  margin-bottom: 15rpx; /* 增大底部间距 */  
+  align-items: center;
+  text-align: center;
+}    
+  
+.dish-category,  
+.dish-ingredients,  
+.dish-spicy-level,  
+.dish-time,  
+.dish-created-at {  
+  font-size: 40rpx; /* 统一其他信息的字体大小 */  
+  margin-bottom: 5rpx; /* 统一其他信息的底部间距 */  
+}  
+  
+/* 可以继续添加其他样式，如列表项的样式等 */

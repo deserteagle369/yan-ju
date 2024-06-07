@@ -2,17 +2,29 @@
     <!-- 菜品名称输入 -->
     <view class="input-group">
         <text class="label">菜品名称：</text>
-        <input class="input-field" placeholder="请输入菜品名称" bindinput="inputName"/>
+        <view class="inputAndsuggestion">
+            <input class="input-field" placeholder="请输入菜品名称" bindinput="onInputChange"/>
+            <!-- 下拉列表，根据 showDropdown 的值来控制是否显示 -->
+            <!-- 动态生成的菜品列表容器 -->
+            <view class="dish-list-container" wx:if="{{showDropdown}}">  
+                <view class="dish-list">
+                  <!-- 遍历 searchedDishes 数组，显示菜品列表 -->  
+                  <view wx:for="{{searchedDishes}}" wx:key="_id" bindtap="onDishSelected" data-id="{{item._id}}">  
+                {{item.dishName}}{{item._id}}  
+                  </view>  
+              </view>  
+            </view>  
+          </view>
     </view>
     <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
     <view class="category-selector">选择菜品分类：{{selectedCategory}}</view>
-</picker>
+    </picker>
     <!-- 已选食材列表 -->
     <view class="selected-ingredients">
         <block wx:for="{{selectedIngredients}}" wx:key="*this">
             <view class="selected-ingredient-item">
               {{item.category}} > {{item.subcategory}} > {{item.ingredient}}
-              <text class="remove-ingredient" data-index="{{index}}" bindtap="removeIngredient">删除</text>
+              <image src="/images/delete.png" class="remove-ingredient" data-index="{{index}}" bindtap="removeIngredient"/>
             </view>
         </block>
     </view>
@@ -31,16 +43,12 @@
         <view class="picker">{{time || '请选择烹饪时间'}}</view>
       </picker>
     </view>
+        
+      <!-- 上传图片按钮或操作区域 -->  
+      <button type="primary" bindtap="chooseAndCropImage">选择图片</button>  
 
-    <view class="input-group">
-      <button type="primary" class="upload-btn" bindtap="uploadImage">上传图片</button>
-      <image wx:if="{{imagePath}}" src="{{imagePath}}" style="width: 100px; height: 100px;"></image>
-
-    </view>
-
-    <view class="input-group" wx:if="{{dishImageUrl}}">
-      <image style="width: 100px; height: 100px;" src="{{dishImageUrl}}" mode="aspectFit"></image>
-    </view>
+    <!-- 显示图片 -->
+    <image src="{{dishImageUrl}}" mode="aspectFit" style="width: 90%; height: 300px; item-align:center"></image>
 
     <!-- 辣度选择 -->
     <view class="input-group">
@@ -50,5 +58,5 @@
         </picker>
     </view>
     <!-- 提交按钮 -->
-    <button class="submit-btn" bindtap="submitDish">提交菜品</button>
+    <button type="primary" bindtap="submitDish" disabled="{{!dishImageUrl}}">提交菜品</button>
 </view>

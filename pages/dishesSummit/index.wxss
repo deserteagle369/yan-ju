@@ -1,52 +1,96 @@
 /* dishesSummit.wxss */
 
 /* Global styles */
-body {
-  font-family: Arial, sans-serif;
-  color: #333;
+page{
+  height: 100%;
+  box-sizing: border-box;
 }
 
 /* Container */
 .container {
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  padding: 4px;
+  width: 100%;
 }
 
 /* Input group */
 .input-group {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  margin-bottom: 16px;
+  flex-direction: row;
+  margin-bottom: 0px;
+  padding: 10px;
 }
 
 .label {
-  font-size: 16px;
-  font-weight: bold;
-  margin-right: 8px;
-}
-
-.input-field {
-  flex: 1;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0 8px;
   font-size: 14px;
+  font-weight: bold;
+  margin-right: 4px;
+  display: inline-block;
+  width: 100px;
+}
+.inputAndsuggestion {  
+  position: relative;  
+  padding: 10px; /* 为下拉列表提供更多空间 */  
+  margin-bottom: 10px;  
+}  
+  
+.input-field {  
+  padding: 5px;  
+  flex: 1;  
+  height: 30px; /* 增加输入框的高度 */  
+  width: 100%; /* 宽度设置为100%，这样它会占据所有可用空间 */  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+  margin: 0;  
+  font-size: 14px;  
+}  
+  
+.dish-list-container {  
+  position: absolute;  
+  top: 100%; /* 使下拉列表紧贴在输入框下方 */  
+  left: 0;  
+  width: 100%;  
+  background-color: #fff;  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+  max-height: 800px;  
+  overflow-y: auto;  
+  z-index: 100; /* 确保下拉列表显示在页面上的其他元素之上 */  
+}  
+
+.dish-list {
+  padding: 5px;
+  background-color: #FFFFFF; 
+  border: 1px solid #CCCCCC; 
+}
+.dish-list view {  
+    padding: 10px;  
+    border-bottom: 1px solid #eee;  
+    cursor: pointer;  
+}  
+  
+.dish-list view:last-child {  
+    border-bottom: none; 
+}
+.dish-item {
+  padding: 10px;
+  border-bottom: 1px solid #CCCCCC;
 }
 
 /* Category selector */
 .category-selector {
-  margin-bottom: 16px;
+  margin-right: 16px;
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  padding: 9px 1.png;
   background-color: #f5f5f5;
   border: 1px solid #ddd;
   border-radius: 4px;
+  width: 90%;
+  margin-bottom: 16px;
 }
 
 /* Selected ingredients */
@@ -55,27 +99,25 @@ body {
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 16px;
+  width: 95%;
 }
 
 .selected-ingredient-item {
+  display: flex;
   position: relative;
-  margin: .jpg 8px;
-  padding: ½px 12px;
+  margin: 8px;
+  padding: 12px;
   background-color: #f0f0f0;
   border-radius: 4px;
   font-size: 14px;
   line-height: 20px;
+  width: 100%;
 }
 
 .remove-ingredient {
-  position: absolute;
-  top: 50%;
-  right: 4px;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: #999;
-  text-decoration: underline;
-  cursor: pointer;
+  width: 24px; /* 图标宽度 */
+  height: 24px; /* 图标高度 */
+  margin: 0 5px; /* 图标间距 */
 }
 
 .remove-ingredient:hover {
@@ -99,31 +141,6 @@ body {
   margin-bottom: 16px;
 }
 
-/* Upload button and image */
-.upload-btn {
-  width: 100%;
-  height: 40px;
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 4px;
-  font-size: 16px;
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.image-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.image-preview img {
-  width: 100px;
-  height: 100px;
-  border-radius: 4px;
-}
-
 /* Spicy level picker */
 .spicy-level-picker {
   margin-bottom: 16px;
@@ -131,16 +148,17 @@ body {
 
 /* Submit button */
 .submit-btn {
-  width: 100%;
+  width: 50%;
   height: 44px;
-  background-color: #007aff;
+  background-color: grey;
   color: white;
   border-radius: 4px;
   font-size: 16px;
   text-align: center;
-  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 8px;
 }
 
 .submit-btn:active {
-  background-color: #0062cc;
+  background-color: Green;
 }
