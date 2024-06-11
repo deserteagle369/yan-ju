@@ -5,7 +5,7 @@
   </view>  
   <view class="dish-info">  
         <view class="dish-name">{{dishName}}</view>  
-        <view class="dish-category">分类: {{selectedCategory}}</view>  
+        <view class="dish-category">分类: {{DishCategory}}</view>  
         <view class="dish-ingredients">  
           <text>食材: </text>  
           <block wx:for="{{selectedIngredients}}" wx:key="index">  

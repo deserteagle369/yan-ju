@@ -3,7 +3,7 @@ Page({
   data: {  
     dishData: {}, // 菜品数据  
     dishName: '',  
-    selectedCategory: '',  
+    DishCategory: '',  
     selectedIngredients: [],  
     selectedSpicyLevel: '',  
     time: '',  
@@ -47,7 +47,7 @@ Page({
         console.log('res.result.openid:', res.result.openid);
         this.setData({  
           dishName: res.result.dishName,  
-          selectedCategory: res.result.selectedCategory,  
+          DishCategory: res.result.DishCategory,  
           selectedIngredients: res.result.selectedIngredients,  
           selectedSpicyLevel: res.result.selectedSpicyLevel,  
           time: res.result.time,  

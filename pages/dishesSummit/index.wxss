@@ -80,8 +80,8 @@ page{
   border-bottom: 1px solid #CCCCCC;
 }
 
-/* Category selector */
-.category-selector {
+/* Dish Category selector */
+.dish-category-selector {
   margin-right: 16px;
   font-size: 16px;
   font-weight: bold;

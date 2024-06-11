@@ -7,8 +7,8 @@ Page({
     dishNameInput: '', // 菜品名称输入框的值  
     searchedDishes: [], // 搜索到的菜品列表  
     showDropdown: false, // 控制下拉列表是否显示的标志
-    categories: ['肉类', '禽类', '海鲜', '蔬菜', '汤类', '冷菜', '主食', '甜品和饮料'],
-    selectedCategory: '',
+    dishCategories: ['肉类', '禽类', '海鲜类', '蔬菜类', '汤类', '冷菜类', '主食类', '甜品和饮料类', '其他类'],
+    dishCategory: '',
     selectedIngredients: [],
     time: '',
     spicyLevels: ['不辣', '微辣', '中辣', '辣', '特辣'],
@@ -16,6 +16,7 @@ Page({
     selectedIngredientsIndex: [0, 0, 0],
     dishImageUrl: '',
     imgSrc: '', // 原始图片地址  
+    ingredientsCategoriesReady: false, // 新增属性
   },
 
   onLoad: function (options) {
@@ -65,6 +66,7 @@ Page({
   },
 
   onShow: function() {  
+    this.initIngredientsCategories();
     // 检查全局变量 app.globalData.imgSrc 是否有新的图片URL  
     if (app.globalData.imgSrc) {  
         // 如果有新的图片URL，更新页面上的图片显示或其他相关逻辑  
@@ -143,38 +145,74 @@ Page({
     console.log(this.data.selectedIngredientsIndex);
   },
 
-  onCategoryChange: function (e) {
-    this.setData({ selectedCategory: this.data.categories[e.detail.value] });
+  ondishCategoryChange: function (e) {
+    this.setData({ dishCategory: this.data.dishCategories[e.detail.value] });
   },
 
-  initIngredientsCategories: function () {
+  async initIngredientsCategories() {
     const db = wx.cloud.database();
     const $ = db.command.aggregate;
-
-    db.collection('ingredients')
-      .aggregate()
-      .group({
-        _id: null,
-        distinctCategories: $.addToSet('$Category'),
-      })
-      .end()
-      .then((res) => {
-        this.setData({
-          ingredientsCategories: [res.list[0].distinctCategories],
-        });
-      })
-      .catch((err) => {
-        console.error('Error fetching first-level categories:', err);
+    try {
+      // 获取所有一级分类
+      const firstLevelResult = await db.collection('ingredients')
+        .aggregate()
+        .group({
+          _id: null,
+          distinctCategories: $.addToSet('$Category')
+        })
+        .end();
+  
+      const firstLevelCategories = firstLevelResult.list[0].distinctCategories;
+      console.log("获取到的一级分类：",firstLevelCategories)
+      // 获取所有食材数据
+      const allIngredientsResult = await db.collection('ingredients').get();
+      const allIngredients = allIngredientsResult.data;
+  
+      // 根据一级分类分组食材
+      const groupedIngredients = {};
+      allIngredients.forEach(ingredient => {
+        const category = ingredient.Category;
+        if (!groupedIngredients[category]) {
+          groupedIngredients[category] = [];
+        }
+        groupedIngredients[category].push(ingredient);
       });
+  
+      // 生成一级、二级和三级分类数组
+      const secondLevel = firstLevelCategories.reduce((acc, category) => {
+    const ingredientsForCategory = groupedIngredients[category];
+    if (Array.isArray(ingredientsForCategory)) {
+        const subcategories = ingredientsForCategory.map(ingredient => {
+            if (!ingredient.Subcategory) {
+                console.warn(`Ingredient without Subcategory in category ${category}:`, ingredient);
+                return null; // 或者你可以选择忽略它
+            }
+            return ingredient.Subcategory;
+        }).filter(Boolean); // 过滤掉null或undefined的值
+        const uniqueSubcategories = [...new Set(subcategories)];
+        acc.push(...uniqueSubcategories);
+    } else {
+        console.warn(`No subcategories found for category: ${category}`);
+    }
+    return acc;
+      }, []);
+  
+      this.setData({
+        ingredientsCategories: [firstLevelCategories, secondLevel, thirdLevel],
+      });
+    } catch (err) {
+      console.error('Error initializing ingredients categories:', err.message, err.stack); // Add err.stack for a stack trace
+      throw new Error('Error fetching or processing ingredients categories:', err);
+    }
   },
 
-  onPickIngredient: function (e) {
+  onPickIngredient: function(e) {
     const { value } = e.detail;
     let newSelectedIngredients = this.data.selectedIngredients.slice();
     let newIngredient = {
       category: this.data.ingredientsCategories[0][value[0]],
       subcategory: this.data.ingredientsCategories[1][value[1]],
-      name: this.data.ingredientsCategories[2][value[2]],
+      ingredient: this.data.ingredientsCategories[2][value[2]],
     };
     newSelectedIngredients.push(newIngredient);
     this.setData({ selectedIngredients: newSelectedIngredients });
@@ -187,63 +225,60 @@ Page({
     this.setData({ selectedIngredients: newSelectedIngredients });
   },
 
-  onColumnChange: function (e) {
+  onColumnChange: function(e) {
     const { column, value } = e.detail;
     let data = {
-      ingredientsCategories: this.data.ingredientsCategories,
-      selectedIngredientsIndex: this.data.selectedIngredientsIndex,
+        ingredientsCategories: this.data.ingredientsCategories,
+        selectedIngredientsIndex: this.data.selectedIngredientsIndex
     };
+  
     data.selectedIngredientsIndex[column] = value;
+  
     const db = wx.cloud.database();
-    if (column === 0) {
-      // 当一级分类改变时
-      const selectedCategory = this.data.ingredientsCategories[0][value];
-      db.collection('ingredients')
-        .where({ Category: selectedCategory })
-        .get()
-        .then((res) => {
-          const subcategories = res.data.map((item) => item.Subcategory);
-          const newSubcategories = [...new Set(subcategories)];
-          data.ingredientsCategories[1] = newSubcategories;
-          // 重置后续选择
-          data.ingredientsCategories[2] = [];
-          data.selectedIngredientsIndex[1] = -1;
-          data.selectedIngredientsIndex[2] = -1;
-          // 更新食材名称数组
-          if (newSubcategories.length > 0) {
-            const firstSubcategory = newSubcategories[0];
-            db.collection('ingredients')
-              .where({
-                Subcategory: firstSubcategory,
-              })
-              .get()
-              .then((res) => {
-                const ingredients = res.data.map((item) => item.Ingredient);
-                data.ingredientsCategories[2] = ingredients;
+  
+    if (column === 0) { // 当一级分类改变时
+        const selectedCategory = this.data.ingredientsCategories[0][value];
+        db.collection('ingredients').where({
+            Category: selectedCategory
+        }).get().then(res => {
+            const subcategories = res.data.map(item => item.Subcategory);
+            const newSubcategories = [...new Set(subcategories)]; // 去重
+            data.ingredientsCategories[1] = newSubcategories;
+  
+            // 重置后续选择
+            data.ingredientsCategories[2] = [];
+            data.selectedIngredientsIndex[1] = 0;
+            data.selectedIngredientsIndex[2] = 0;
+  
+            // 更新食材名称数组
+            if (newSubcategories.length > 0) {
+                const firstSubcategory = newSubcategories[0];
+                db.collection('ingredients').where({
+                    Subcategory: firstSubcategory
+                }).get().then(res => {
+                    const ingredients = res.data.map(item => item.Ingredient);
+                    data.ingredientsCategories[2] = ingredients;
+                    this.setData(data);
+                });
+            } else {
                 this.setData(data);
-              });
-          } else {
-            this.setData(data);
-          }
+            }
         });
-    } else if (column === 1) {
-      // 当二级分类改变时
-      const selectedSubcategory = data.ingredientsCategories[1][value];
-      db.collection('ingredients')
-        .where({
-          Subcategory: selectedSubcategory,
-        })
-        .get()
-        .then((res) => {
-          const ingredients = res.data.map((item) => item.Ingredient);
-          data.ingredientsCategories[2] = ingredients;
-          // 重置食材选择
-          data.selectedIngredientsIndex[2] = -1;
-          this.setData(data);
+    } else if (column === 1) { // 当二级分类改变时
+        const selectedSubcategory = data.ingredientsCategories[1][value];
+        db.collection('ingredients').where({
+            Subcategory: selectedSubcategory
+        }).get().then(res => {
+            const ingredients = res.data.map(item => item.Ingredient);
+            data.ingredientsCategories[2] = ingredients;
+  
+            // 重置食材选择
+            data.selectedIngredientsIndex[2] = 0;
+            this.setData(data);
         });
     } else {
-      // 如果是其他列改变，目前只有三列，所以不需要额外逻辑
-      this.setData(data);
+        // 如果是其他列改变，目前只有三列，所以不需要额外逻辑
+        this.setData(data);
     }
   },
 
@@ -283,7 +318,7 @@ Page({
     // 提交菜品信息的逻辑
     if (
       this.data.dishName &&
-      this.data.selectedCategory &&
+      this.data.dishCategory &&
       this.data.selectedIngredients &&
       this.data.time &&
       this.data.selectedSpicyLevel &&
@@ -297,7 +332,7 @@ Page({
         name: 'cloudCreateDish',
         data: {
           dishName: this.data.dishName,
-          selectedCategory: this.data.selectedCategory,
+          dishCategory: this.data.dishCategory,
           selectedIngredients: this.data.selectedIngredients,
           time: this.data.time,
           selectedSpicyLevel: this.data.selectedSpicyLevel,

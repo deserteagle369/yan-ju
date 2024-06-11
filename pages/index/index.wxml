@@ -1,3 +1,4 @@
+
 <view class="container">
 
     <!-- 推荐团餐列表 -->
@@ -24,25 +25,51 @@
       </view>
     </view>
     <button class="create-meal-btn" bindtap="createMeal">创建团餐</button>
+    <swiper
+  class="meal-swiper"
+  circular
+  indicator-dots
+  autoplay
+  interval="5000"
+  duration="500"
+  bindswipe="onSwiperChange">
+  <swiper-item wx:for="{{currentMealDishes}}" wx:key="index">
+    <image
+      class="dish-image"
+      src="{{item.dishImageUrl}}"
+      mode="aspectFit"
+      bindtap="goToMealDetail"
+      data-mealId="{{currentMeals[0]._id}}"
+      data-dishId="_id}}"
+    />
+    <view class="dish-caption">
+      <text class="dish-name">{{item.dishName}}</text>
+    </view>
+  </swiper-item>
+</swiper>
     <view class="search-bar">
-        <input class="search-input" placeholder="搜索团餐名称"/>
+        <input class="search-input" placeholder="搜索团餐名称" bindinput="onInputChange" value="{{searchKeyword}}"/>
     </view>
-    <view class="current-meal">
+    <view class="filtered-meals">
       <view class="current-meal-title">当前团餐</view>
-      <view class="current-meal-item" bindtap="goToMealDetail" data-mealid="{{currentMeal._id}}">
-        <view class="meal-date">{{currentMeal.date}}</view>
-        <view class="meal-name">{{currentMeal.mealName}}</view>
-        <view class="meal-dishes-count">{{currentMeal.dishCount}}菜</view>
-        <view class="meal-dishes-count">{{currentMeal.participantCount}}人</view>
+      <!-- 菜品图片轮播图 -->
+
+      <view wx:for="{{filteredCurrentMeals}}" wx:key="_id" class="current-meal-item" bindtap="goToMealDetail" data-mealid="{{item._id}}" data-mealtype="current">
+        <view class="meal-date">{{item.date}}</view>
+        <view class="meal-name">{{item.mealName}}</view>
+        <view class="meal-dishes-count">{{item.dishCount}}菜</view>
+        <view class="meal-dishes-count">{{item.participantCount}}人</view>
       </view>  
+      <view wx:if="{{filteredCurrentMeals.length === 0}}" class="no-meal-found">没有找到匹配的当前团餐</view>
     </view>
-    <view class="history-meals">
+    <view class="filtered-meals">
       <view class="history-meal-title grey-text">历史团餐</view>
-      <view wx:for="{{historyMeals}}" wx:key="id" class="history-meal-item grey-text" bindtap="goToMealDetail" data-mealid="{{item._id}}" data-mealtype="history">
+      <view wx:for="{{filteredHistoryMeals}}" wx:key="_id" class="history-meal-item grey-text" bindtap="goToMealDetail" data-mealid="{{item._id}}" data-mealtype="history">
         <view class="meal-date">{{item.date}}</view>
         <view class="meal-name">{{item.mealName}}</view>
         <view class="meal-dishes-count">{{item.dishCount}}菜</view>
         <view class="meal-dishes-count">{{item.participantCount}}人</view>
       </view>
+      <view wx:if="{{filteredHistoryMeals.length === 0}}" class="no-meal-found">没有找到匹配的历史团餐</view>
     </view>
 </view>

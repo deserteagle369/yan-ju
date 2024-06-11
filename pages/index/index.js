@@ -8,7 +8,7 @@ async function fetchMeals(type) {
         status: type,
       },
     });
-    console.log("fetchMeals 返回结果为：",result);
+    console.log("fetchMeals参数为：",type,"返回结果为：",result);
 
     if (result.errMsg !== 'cloud.callFunction:ok') {
       console.error('云函数调用失败');
@@ -48,18 +48,28 @@ async function fetchTopRatedMeals() {
     return [];
   }
 }
+
 Page({
   data: {
-    currentMeal: null,
+    searchKeyword: '',  
+    currentMeals: [],
     historyMeals: [],
+    errorFetchingMeal: '', // 错误消息
     recommendedMeals: [], // 推荐团餐的数据数组
     currentMealDishes: [], // 假设这是当前团餐的菜品图片数组
+    filteredCurrentMeals: [], // 过滤后的当前团餐  
+    filteredHistoryMeals: [], // 过滤后的历史团餐列表  
   },
   onLoad: async function(options){
     try {
-      await this.getCurrentMeal('ongoing');
-      await this.getHistoryMeals('ended');
+      console.log("启动 onLoad 函数");
+      await this.getMealsByType('ongoing');
+      console.log("currentMeals:",this.data.currentMeals);
+      await this.getMealsByType('ended');
+      console.log("historyMeals:",this.data.historyMeals);      
       await this.getRecommendedMeals();
+      console.log("recommendedMeals:",this.data.recommendedMeals);
+      this.onInputChange({ detail: { value: '' } });
     } catch (error) {
       console.error('Error loading meals:', error);
       // 可以在这里添加用户错误提示的逻辑
@@ -80,54 +90,130 @@ Page({
       });
     }
   },
-  // 获取正在进行的团餐
-  async getCurrentMeal(type) {
-    console.log(`启动 getCurrentMeal 函数，参数为：${type}`);
-    try {
-      const mealsData = await fetchMeals(type);
-      console.log("mealsData:", mealsData);
+  // 获取正在进行和结束的团餐
+// 获取团餐列表
+async getMealsByType(type) {
+  console.log(`启动 getMealsByType 函数，参数为：${type}`);
+  try {
+    const mealsData = await fetchMeals(type);
+    console.log("mealsData:", mealsData);
 
-      if (mealsData && mealsData.length > 0) {
-        // 使用 this.setData() 来更新页面上的数据
-        this.setData({
-          currentMeal: mealsData[0]
-        });
-        console.log('当前进行中的团餐:', this.data.currentMeal);
-      } else {
-        console.log('没有找到进行中的团餐');
-        // 同样使用 this.setData() 来更新页面上的数据
-        this.setData({
-          currentMeal: null
-        });
-      }
-    } catch (error) {
-      console.error('获取当前团餐出错:', error);
-      // 处理错误，例如设置一个错误消息到页面上
+    let mealsArray = mealsData; // 直接使用获取的mealsData
+
+    if (mealsData && mealsData.length > 0) {
+      // 根据type更新不同的页面数据
+      const dataType = type === 'ongoing' ? 'currentMeals' : 'historyMeals';
       this.setData({
-        errorFetchingMeal: '无法获取当前团餐，请稍后再试。'
+        [dataType]: mealsArray,
+      });
+      // 特殊处理：为 currentMealDishes 赋值
+      if (type === 'ongoing') {
+        this.fetchDishImages(mealsArray[0]._id); // 假设 mealsArray[0] 是当前团餐
+      }
+      console.log(`获取${type}的团餐结果：`, this.data);
+    } else {
+      this.setData({
+        errorFetchingMeal: `${type === 'ongoing' ? '当前' : '历史'}团餐未找到，请稍后再试。`,
       });
     }
-  },
-  // ...其他相关函数也添加相应的打印语句
-  // 获取历史团餐
-  async getHistoryMeals(typeParam) {
-    try {
-      const meals = await fetchMeals(typeParam);
-      if (meals && Array.isArray(meals) && meals.length > 0) {
-        this.setData({
-          historyMeals: meals,
-        });
+  } catch (error) {
+    console.error(`获取${type}团餐出错:`, error);
+    // 设置错误消息
+    this.setData({
+      errorFetchingMeal: `${type === 'ongoing' ? '当前' : '历史'}团餐获取失败，请稍后再试。`,
+    });
+  }
+},
+// 新增函数：根据 mealId 获取菜品图片
+// ...
+
+fetchDishImages: function(mealId) {
+  const that = this; // 保存对当前页面对象的引用
+
+  // 首先调用 cloudGetMealOrders 云函数获取 dishIds 数组
+  wx.cloud.callFunction({
+    name: 'cloudGetMealOrders',
+    data: { mealId: mealId },
+    // 云函数调用成功后的回调
+    success: res => {
+      if (res.errMsg === 'cloud.callFunction:ok') {
+        // 检查返回的数据中是否包含 dishIds 数组
+        const dishIds = res.result.data && res.result.data.dishIds || [];
+        if (dishIds.length > 0) {
+          // 调用 cloudGetDishById 云函数获取所有菜品的详细信息
+          wx.cloud.callFunction({
+            name: 'cloudGetDishById',
+            data: { dishIds: dishIds }, // 传入 dishIds 数组
+            // 云函数调用成功后的回调
+            success: dishRes => {
+              if (dishRes.errMsg === 'cloud.callFunction:ok') {
+                // 处理成功获取的菜品数据
+                const dishesData = dishRes.result.data;
+                console.log("云函数cloudGetDishById返回的结果result.data:", dishesData);
+                that.setData({
+                  currentMealDishes: dishesData
+                });
+                console.log("currentMealDishes:", that.data.currentMealDishes);
+              } else {
+                console.error('cloudGetDishById 云函数调用失败:', dishRes.errMsg);
+              }
+            },
+            fail: err => {
+              console.error('cloudGetDishById 调用失败:', err);
+            }
+          });
+        } else {
+          console.log('没有找到菜品ID数组或数组为空');
+          // 可以更新页面数据，显示没有菜品信息
+          that.setData({
+            currentMealDishes: []
+          });
+        }
       } else {
-        console.log('No history meals found');
-        this.setData({ historyMeals: [] });
+        console.error('cloudGetMealOrders 云函数调用失败:', res.errMsg);
       }
-    } catch (error) {
-      console.error('Error fetching history meals:', error);
-      // 可以在这里添加用户错误提示的逻辑
+    },
+    fail: err => {
+      console.error('cloudGetMealOrders 调用失败:', err);
     }
-  },
-  
+  });
+},
+
+// ...
   // Add other methods here
+  // 处理搜索框输入变化的事件
+  onInputChange: function(e) {
+    const keyword = e.detail.value;
+    this.setData({
+      searchKeyword: keyword,
+    });
+    // 过滤当前团餐和历史团餐
+    this.filterMealsByKeyword(keyword);
+  },
+  // 根据关键字过滤团餐
+  filterMealsByKeyword(keyword) {
+    // 修正变量引用
+    let filteredCurrentMeals = this.data.currentMeals;
+    let filteredHistoryMeals = this.data.historyMeals;
+  
+    if (keyword === '') {
+      // 显示所有团餐
+    } else {
+      filteredCurrentMeals = this.data.currentMeals.filter(this.createMealFilter(keyword));
+      filteredHistoryMeals = this.data.historyMeals.filter(this.createMealFilter(keyword));
+    }
+  
+    this.setData({
+      filteredCurrentMeals,
+      filteredHistoryMeals,
+    });
+  },
+  // 创建过滤函数
+  createMealFilter: function(keyword) {
+    return (meal) => {
+      return meal.mealName.toLowerCase().includes(keyword.toLowerCase());
+    };
+},
   goToMealDetail: function(e) {
     const mealId = e.currentTarget.dataset.mealid;  // 获取团餐 ID
     console.log("goToMealDetail函数收到团餐Id:", mealId);

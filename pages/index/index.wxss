@@ -1,3 +1,64 @@
+/* 菜品图片轮播图样式 */
+.meal-swiper {
+  width: 100%;
+}
+
+/* 菜品图片样式 */
+.dish-image {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+/* 遮罩层样式 */
+.dish-caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3); /* 半透明黑色背景 */
+  color: white; /* 白色文字 */
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 菜品名称样式 */
+.dish-name {
+  white-space: nowrap; /* 防止换行 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  margin: 10px; /* 与页面其他内容的间距 */
+  padding: 0px; /* 容器内边距 */
+  background-color: #ffffff; /* 背景颜色 */
+  border-radius: 10px; /* 边框圆角 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+}
+
+/* 搜索框输入框样式 */
+.search-input {
+  width: 90%; /* 输入框宽度 */
+  height: 40px; /* 输入框高度 */
+  font-size: 16px; /* 字体大小 */
+  padding: 0 10px; /* 输入框内边距 */
+  border: 1px solid #cccccc; /* 边框 */
+  border-radius: 10px; /* 输入框圆角 */
+  outline: none; /* 点击时不显示轮廓 */
+  box-sizing: border-box; /* 边框计算在宽度内 */
+}
+
+/* 搜索框占位符样式 */
+.search-input::placeholder {
+  color: #aaaaaa; /* 灰色 */
+  font-size: 16px; /* 字体大小 */
+}
+
 .container {
   display: flex;
   flex-direction: column;

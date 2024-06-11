@@ -17,7 +17,7 @@ Page({
     hasSearchResult: false, // 是否有搜索结果
     categories: [], // 菜品库类别
     filteredDishes: [], // 根据类别筛选出的菜品库
-    selectedCategory: null, // 当前选中的类别
+    DishCategory: null, // 当前选中的类别
     currentFilter: 'search', // 初始筛选模式为“搜索菜品”
     selectedDish: null,
     dishQuantity: 1,
@@ -118,7 +118,7 @@ Page({
         dishImageUrl: dishToUpdate.dishImageUrl,  
         dishName: dishToUpdate.dishName,  
         dishQuantity: 1,
-        selectedCategory: dishToUpdate.selectedCategory,
+        DishCategory: dishToUpdate.DishCategory,
         seleectedSpicyLevel: dishToUpdate.seleectedSpicyLevel,
         time: dishToUpdate.time,
       });
@@ -200,8 +200,8 @@ Page({
             dishes: data.dishes,
             currentMealDishes: data.dishes.map(dish => dish._id),  
           });  
-        console.log("云函数返回的data:",data);
-        console.log("云函数返回的dishes:",data.dishes);
+        console.log("云函数cloudGetMealsById返回的data:",data);
+        console.log("云函数cloudGetMealsById返回的dishes:",data.dishes);
         } else {  
           // 处理错误的情况，比如显示错误信息  
           wx.showToast({  
