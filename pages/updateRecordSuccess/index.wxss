@@ -19,12 +19,22 @@ page {
 }
 
 .button {
-  width: 300rpx;
+  background-color: #FF6A00;
+  color: white;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
   text-align: center;
-  margin: 550rpx auto 0 auto;
-  height: 80rpx;
-  color: #07c160;
-  border-radius: 5px;
-  line-height: 80rpx;
-  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.button:hover {
+  background-color: #FF8C00;
+}
+
+.button:disabled {
+  background-color: #CCCCCC;
+  cursor: not-allowed;
 }

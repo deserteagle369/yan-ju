@@ -1,4 +1,20 @@
 /* userProfile.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.userinfo-title {
+  width: 100%;
+}
 
 /* Global styles */
 body {
@@ -6,109 +22,126 @@ body {
   color: #333;
 }
 
-/* Header */
-.header {
+.user-info {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.avatar-and-points {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 20px 0;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #eee;
 }
 
 .userinfo-avatar {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;  
   border-radius: 50%;
-  margin-right: 16px;
+  object-fit: cover; /* 保持宽高比 */
+  
 }
 
+.userinfo-points {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.name-and-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  padding-left: 10px;
+}
 .userinfo-nickname {
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  margin-right: 8px;
-}
-
-/* Login button */
-.btn-login {
-  display: flex;
+  margin-left: 30px;
+  margin: 15px;
   align-items: center;
-  justify-content: center;
-  padding: 20px 0;
 }
 
-.btn-login button {
-  width: ¾0%;
-  height: 44px;
-  background-color: #007aff;
-  color: white;
-  border-radius: 4px;
-  font-size: 16px;
+.userinfo-id {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  
+}
+
+/* 当前团餐的样式 */
+.current-meal {
+  margin-top: 10px;
+  background-color: rgb(255, 255, 255); /* 当前团餐的背景颜色 */
+}
+.current-meal-title {
   text-align: center;
+  font-weight: bold;
 }
 
-.btn-login button:active {
-  background-color: #0062cc;
+.current-meal-item {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
 }
-
-/* Logout button */
-.logout-btn {
-  margin: 20px 0;
+.meal-date,
+.meal-name,
+.meal-dishes-count {
+  margin: 0 10px;
 }
-
-.logout-btn button {
-  width: 100%;
-  height: 44px;
-  background-color: #ff3b30;
-  color: white;
-  border-radius: 4px;
-  font-size: 16px;
-  text-align: center;
-}
-
-.logout-btn button:active {
-  background-color: #e62c14;
-}
-
 /* Meal history section */
-.meal-history {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.meal-list {
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.section-title {
+  font-size: 18px;
+  color: #333;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 
 .meal-item {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 16px;
-  border-bottom: 1px solid #f2f2f2;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.meal-item:last-child {
-  border-bottom: none;
+.meal-info {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.meal-item > text {
-  font-size: 14px;
-  margin-bottom: 8px;
+.meal-date,
+.meal-name,
+.meal-status {
+  font-size: 16px;
+  color: black;
+  flex-basis: 33%;  /* Allocate equal space for each text column */
 }
 
-.meal-item > text:last-child {
-  margin-bottom: 0;
+/* 灰黑色文字的样式，用于历史团餐 */
+.grey-text {
+  color: rgb(141, 140, 140) !important; /* 灰黑色文字，可根据需要调整 */
 }
 
-/* Status colors */
-.status-pending {
-  color: #FFA000;
-}
-
-.status-delivered {
-  color: #4CAF50;
-}
-
-.status-cancelled {
-  color: #F44336;
+.delete-icon {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;  /* Ensure some space between the text and the icon */
 }

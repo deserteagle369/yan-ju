@@ -1,20 +1,6 @@
 // pages/testLogin/index.js
 Page({
-  testLogin: function() {
-    wx.login({
-      success: function(res) {
-        if (res.code) {
-          console.log("登录成功，获取到的code:", res.code);
-          // 这里可以继续调用云函数来获取openid和session_key
-        } else {
-          console.error("登录失败：", res.errMsg);
-        }
-      },
-      fail: function(err) {
-        console.error("登录调用失败：", err);
-      }
-    });
-  },
+
   /**
    * 页面的初始数据
    */

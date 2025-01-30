@@ -1,0 +1,13 @@
+/* components/switchLanguage/index.wxss */
+.switch-language-box {
+  position: relative; 
+  top: 10px;
+  left: 0px;
+  margin:20px;
+  padding: 5px 20px;
+  border: solid 1px grey;
+  border-radius: 50px;
+  width: 300rpx;
+  text-align: center;
+  align-items: center;
+}

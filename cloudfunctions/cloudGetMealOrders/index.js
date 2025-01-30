@@ -1,4 +1,4 @@
-// cloudGetMealOrders 云函数
+// cloudGetMealOrders 云函数，返回dishes数组
 const cloud = require('wx-server-sdk')
 
 cloud.init({

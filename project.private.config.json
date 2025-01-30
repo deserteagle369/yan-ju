@@ -21,8 +21,29 @@
           "scene": null
         },
         {
-          "name": "pages/cropper/cropper",
-          "pathName": "pages/cropper/cropper",
+          "name": "pages/purchaseList/index",
+          "pathName": "pages/purchaseList/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/ingredients/index",
+          "pathName": "pages/ingredients/index",
+          "query": "mealId=63ca5b1365e9401e0123ce5d5d7c18e5",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/dishes/index",
+          "pathName": "pages/dishes/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/UserProfile/index",
+          "pathName": "pages/UserProfile/index",
           "query": "",
           "launchMode": "default",
           "scene": null
@@ -35,15 +56,15 @@
           "scene": null
         },
         {
-          "name": "pages/dishesSummit/cropper-example",
-          "pathName": "pages/dishesSummit/cropper-example",
+          "name": "pages/cropper/cropper",
+          "pathName": "pages/cropper/cropper",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
-          "name": "pages/MealDetail/index",
-          "pathName": "pages/MealDetail/index",
+          "name": "pages/mealDetail/index",
+          "pathName": "pages/mealDetail/index",
           "query": "mealId=9fe3c0fd66374314004a0d6d75eb5618",
           "launchMode": "default",
           "scene": null

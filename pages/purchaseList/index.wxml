@@ -1,0 +1,16 @@
+<!--pages/purchaseList/index.wxml-->
+<view class="container">
+    <view class="filter-option">
+        <switch bindchange="toggleShowZeroQuantity">{{_t['显示数量为0的食材']}}</switch>
+    </view>
+    
+    <view class="purchase-list">
+        <block wx:for="{{purchaseList}}" wx:key="id">
+            <view class="purchase-item {{item.quantity === 0 ? 'zero-quantity' : ''}}" 
+                  wx:if="{{showZeroQuantity || item.quantity > 0}}">
+                <text>{{item.name}} ({{item.category}} - {{item.subcategory}})</text>
+                <text>{{item.quantity}} {{item.unit}}</text>
+            </view>
+        </block>
+    </view>
+</view>

@@ -2,17 +2,18 @@
   "pages": [
     "pages/index/index",
     "pages/discover/index",
+    "pages/dishes/index",
     "pages/register/login",
     "pages/register/bindPhone",
     "pages/testLogin/index",
     "pages/family/index",
-    "pages/dishes/index",
-    "pages/dishesSummit/index",
+    "pages/dishSummit/index",
     "pages/dishDetail/index",
     "pages/createMeal/index",
-    "pages/MealDetail/index",
+    "pages/mealDetail/index",
     "pages/addDishesToMeal/index",
     "pages/ingredients/index",
+    "pages/purchaseList/index",
     "pages/MenuPage/index",
     "pages/UserProfile/index",
     "pages/FamilyMembers/index",
@@ -52,8 +53,8 @@
       {
         "pagePath": "pages/dishes/index",
         "text": "菜品",
-        "iconPath": "images/dish.png",
-        "selectedIconPath": "images/dish-selected.png"
+        "iconPath": "images/dishes.png",
+        "selectedIconPath": "images/dishes-selected.png"
       },
       {
         "pagePath": "pages/UserProfile/index",
@@ -66,8 +67,9 @@
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
+    "navigationStyle": "custom",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTitleText": "宴聚-多人共享点菜",
     "navigationBarTextStyle": "black"
   },
   "permission": {
@@ -77,5 +79,8 @@
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "switchLanguage": "./components/switchLanguage/index"
+  }
 }

@@ -1,0 +1,34 @@
+/* pages/purchaseList/index.wxss */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background-color: #f8f8f8;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+.filter-option {
+    margin-bottom: 20px;
+}
+
+.purchase-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.purchase-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.zero-quantity {
+    color: #999;
+}

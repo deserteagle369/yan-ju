@@ -1,38 +1,27 @@
 <!--pages/dishDetail/index.wxml-->
 <view class="container" text-align="center">
     <view class="dish-image">  
-    <image src="{{dishImageUrl}}" mode="aspectFit"></image>  
-  </view>  
-  <view class="dish-info">  
-        <view class="dish-name">{{dishName}}</view>  
-        <view class="dish-category">分类: {{DishCategory}}</view>  
+      <image src="{{dishImageUrl}}" mode="aspectFit"></image>  
+    </view>  
+    <view class="dish-info">  
+        <view class="dish-name">{{_t['dishName']}}</view>  
+        <view class="dish-category">{{_t['分类：']}}{{dishCategory}}</view>  
         <view class="dish-ingredients">  
-          <text>食材: </text>  
+          <text>{{_t['食材：']}}</text>  
           <block wx:for="{{selectedIngredients}}" wx:key="index">  
-              <text>{{item.name}}</text>  
-              <text wx:if="{{index < selectedIngredients.length - 1}},"> | </text>  
+              <text>{{item.selectedIngredient}}</text>  
+              <text wx:if="{{index < selectedIngredients.length - 1}}"> | </text>  
           </block>  
         </view>  
-        <view class="dish-spicy-level">辣度: {{selectedSpicyLevel}}</view>  
-        <view class="dish-time">时间: {{time}}</view>  
-        <view class="dish-created-at">上传: {{createdAt}}</view>
-        <view class="dish-author">用户：
+        <view class="dish-spicy-level">{{_t['辣度：']}} {{selectedSpicyLevel}}</view>  
+        <view class="dish-time">{{_t['时间：']}} {{time}}</view>  
+        <view class="dish-created-at">{{_t['上传：']}} {{createdAt}}</view>
+        <view class="dish-created-at">{{_t['更新：']}} {{lastUpdatedAt}}</view>
+        <view class="dish-author">{{_t['用户：']}}
           <image class="dish-author-avatar" src="{{authorAvatarUrl}}" mode="aspectFit" wx:if="{{authorAvatarUrl}}"></image>                 
           <text class="dish-author-name">{{authorId}}</text>
         </view>
-  </view>  
+    </view> 
+  <!-- 编辑按钮，只有创建者可见 -->
+  <button type="primary" class="edit-button" wx:if="{{isOwner}}" bindtap="editDish">{{_t['编辑菜品']}}</button>   
 </view>
-  <!-- 编辑按钮，仅当菜品是当前用户提交时显示 -->  
-  <view class="edit-button" wx:if="{{isOwner}}">  
-    <button bindtap="editDish">编辑</button>  
-  </view>  
-  
-  <!-- 菜品编辑表单，初始时隐藏 -->  
-  <form wx:if="{{isEditing}}" bindsubmit="submitEdit">  
-    <!-- 输入框、选择器等用于编辑菜品信息的组件 -->  
-    <input name="name" value="{{dishData.name}}" placeholder="请输入菜品名称" />  
-    <textarea name="description" placeholder="请输入菜品描述">{{dishData.description}}</textarea>  
-    <!-- ... -->  
-    <button formType="submit">保存</button>  
-    <button bindtap="cancelEdit">取消</button>  
-  </form>  

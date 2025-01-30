@@ -1,2 +1,5 @@
 <!--pages/dishes/index.wxml-->
-<text>pages/dishes/index.wxml</text>
+<view class="container">
+{{_t['欢迎提出建议，请联系作者。']}}
+  <button class="yan-ju-btn" bindtap="copyWeChatId">{{_t['复制作者微信号']}}</button>
+</view>

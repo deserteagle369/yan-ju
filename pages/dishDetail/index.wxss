@@ -61,4 +61,24 @@
   margin-bottom: 5rpx; /* 统一其他信息的底部间距 */  
 }  
   
+.edit-button {
+  background-color: #FF6A00;
+  color: white;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.edit-button:hover {
+  background-color: #FF8C00;
+}
+
+.edit-button:disabled {
+  background-color: #CCCCCC;
+  cursor: not-allowed;
+}
 /* 可以继续添加其他样式，如列表项的样式等 */

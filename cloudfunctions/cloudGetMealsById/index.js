@@ -1,4 +1,4 @@
-// 云函数名称：cloudGetMealsById    
+// 云函数名称：cloudGetMealsById，返回团餐详情，点餐人数量，菜品数量，菜品列表dishes    
 const cloud = require('wx-server-sdk');    
 cloud.init({    
   env: cloud.DYNAMIC_CURRENT_ENV    
@@ -69,7 +69,7 @@ exports.main = async (event, context) => {
       code: 0, // 假设0表示成功    
       message: 'cloudGetMealsById 获取团餐信息成功',    
       data: {    
-        mealDetail: mealDetail, // 团餐的详细信息    
+        mealDetail: mealDetail, // 团餐的详细信息
         participantCount: userMealOrdersResult.data.length, // 参与点餐人的数量    
         dishCount: finalDishes.length, // 参与点餐的菜品数量    
         dishes: finalDishes // 菜品列表，包含dishQuantity    

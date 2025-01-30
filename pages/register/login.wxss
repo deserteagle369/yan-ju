@@ -30,15 +30,24 @@
 
 /* General button styling, can be reused for other purposes */
 .button {
-  width: 80%;
-  background-color: #1e90ff;
+  background-color: #FF6A00;
   color: white;
-  padding: 10px 0;
-  border-radius: 20px;
-  font-weight: bold;
-  text-align: center;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
   border: none;
-  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #FF8C00;
+}
+
+.button:disabled {
+  background-color: #CCCCCC;
+  cursor: not-allowed;
 }
 
 /* Additional styling as needed for other elements */

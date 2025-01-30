@@ -1,20 +1,78 @@
+/* pages/createMeal/index.wxss */
+
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
+
 .input-group {
-  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  margin:10px;
 }
-.input, .picker {
-  width: 100%;
+
+.label {
+  font-size: 16px;
+  color: #666;
+  width: 90px; /* 设置标签的宽度 */
+  margin: 10px; /* 标签和输入框之间的间隔 */
+}
+
+.input-field,
+.picker {
+  flex-grow: 1; /* 输入框占用剩余空间 */
   padding: 10px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 确保文本和图标分布均匀 */
 }
-.submit-btn {
-  width: 100%;
-  background-color: #1aad19;
-  color: white;
+
+.input-field:focus,
+.picker:focus {
+  border-color: #1cbbb4;
+}
+
+.picker {
+  cursor: pointer;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.clear-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+}
+
+.radio-group {
+  display: flex;
+  justify-content: space-around;
   padding: 10px;
-  border-radius: 4px;
-  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.radio-button {
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.radio-button.active {
+  background-color: #1cbbb4;
+  color: #fff;
 }

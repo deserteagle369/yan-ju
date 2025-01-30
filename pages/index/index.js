@@ -1,14 +1,17 @@
 // pages/index/index.js
-async function fetchMeals(type) {
-  console.log(`启动 fetchMeals 函数，参数为：${type}`);
+const base = require('../../utils/language.js')
+const _ = base._
+async function fetchMeals(type,openid) {
+  console.log(`启动 fetchMeals 函数，参数为：${type}, openid 为：${openid}`);
   try {
     const result = await wx.cloud.callFunction({
       name: 'cloudGetMealsByStatus',
       data: {
         status: type,
+        openid: openid, // 按 openid 排序
       },
     });
-    console.log("fetchMeals参数为：",type,"返回结果为：",result);
+    console.log("fetchMeals参数为：",type,openid,"返回结果为：",result);
 
     if (result.errMsg !== 'cloud.callFunction:ok') {
       console.error('云函数调用失败');
@@ -51,21 +54,29 @@ async function fetchTopRatedMeals() {
 
 Page({
   data: {
-    searchKeyword: '',  
+    searchKeyword: '',
     currentMeals: [],
     historyMeals: [],
-    errorFetchingMeal: '', // 错误消息
-    recommendedMeals: [], // 推荐团餐的数据数组
-    currentMealDishes: [], // 假设这是当前团餐的菜品图片数组
-    filteredCurrentMeals: [], // 过滤后的当前团餐  
-    filteredHistoryMeals: [], // 过滤后的历史团餐列表  
+    errorFetchingMeal: '',
+    recommendedMeals: [],
+    swipeMealDishes: [],
+    filteredCurrentMeals: [],
+    filteredHistoryMeals: [],
+    recommendMealDishes: [],
+    currentIndex: 0, // 初始化当前轮播索引
+    _t: '',
   },
+
   onLoad: async function(options){
+    this.mixinFn();
+    const app = getApp();
+    const openid = app.globalData.openid || wx.getStorageSync('user').openid;
+    console.log("当前用户的 openid:", openid); // Debug 输出以确认获取到的 openid
     try {
       console.log("启动 onLoad 函数");
-      await this.getMealsByType('ongoing');
+      await this.getMealsByType('ongoing',openid);
       console.log("currentMeals:",this.data.currentMeals);
-      await this.getMealsByType('ended');
+      await this.getMealsByType('ended',openid);
       console.log("historyMeals:",this.data.historyMeals);      
       await this.getRecommendedMeals();
       console.log("recommendedMeals:",this.data.recommendedMeals);
@@ -75,27 +86,48 @@ Page({
       // 可以在这里添加用户错误提示的逻辑
     }
   },
-  //获取推荐团餐
-  async getRecommendedMeals() {
-    const topRatedMeals = await fetchTopRatedMeals();
-    if (topRatedMeals.length > 0) {
-      this.setData({
-        recommendedMeals: topRatedMeals,
-      });
-      console.log("recommendedMeals:",this.data.recommendedMeals);
-    } else {
-      console.warn('没有获取到推荐的团餐数据');
-      this.setData({
-        recommendedMeals: [], // 设置为空数组而不是 undefined
-      });
-    }
+  refresh() {
+    this.onLoad()
   },
+  mixinFn() {
+    this.setData({
+      _t: base._t()
+    })
+  },
+
+  updatePageData: function() {
+    this.setData({
+      pageTitle: i18n.t('page_title'), // 页面标题
+      welcomeText: i18n.t('welcome_text') // 欢迎文本
+    });
+  },
+  // 获取推荐团餐
+async getRecommendedMeals() {
+  const topRatedMeals = await fetchTopRatedMeals();
+  if (topRatedMeals.length > 0) {
+    this.setData({
+      recommendedMeals: topRatedMeals,
+      recommendMealDishes: [] // 重置轮播图数组
+    });
+    // 为每个推荐团餐获取第一张菜品图片
+    topRatedMeals.forEach(meal => {
+      this.fetchDishImages(meal._id);
+    });
+  } else {
+    console.warn('没有获取到推荐的团餐数据');
+    this.setData({
+      recommendedMeals: [], // 设置为空数组而不是 undefined
+      swipeMealDishes: [] // 确保没有菜品数据时清空菜品数组
+    });
+  }
+},
+
   // 获取正在进行和结束的团餐
 // 获取团餐列表
-async getMealsByType(type) {
-  console.log(`启动 getMealsByType 函数，参数为：${type}`);
+async getMealsByType(type,openid) {
+  console.log(`启动 getMealsByType 函数，参数为：${type}, openid：${openid}`);
   try {
-    const mealsData = await fetchMeals(type);
+    const mealsData = await fetchMeals(type,openid);
     console.log("mealsData:", mealsData);
 
     let mealsArray = mealsData; // 直接使用获取的mealsData
@@ -106,7 +138,7 @@ async getMealsByType(type) {
       this.setData({
         [dataType]: mealsArray,
       });
-      // 特殊处理：为 currentMealDishes 赋值
+      // 特殊处理：为 swipeMealDishes 赋值
       if (type === 'ongoing') {
         this.fetchDishImages(mealsArray[0]._id); // 假设 mealsArray[0] 是当前团餐
       }
@@ -124,53 +156,40 @@ async getMealsByType(type) {
     });
   }
 },
-// 新增函数：根据 mealId 获取菜品图片
-// ...
 
+// 获取团餐菜品图片
 fetchDishImages: function(mealId) {
-  const that = this; // 保存对当前页面对象的引用
-
-  // 首先调用 cloudGetMealOrders 云函数获取 dishIds 数组
+  const that = this;
   wx.cloud.callFunction({
     name: 'cloudGetMealOrders',
     data: { mealId: mealId },
-    // 云函数调用成功后的回调
     success: res => {
-      if (res.errMsg === 'cloud.callFunction:ok') {
-        // 检查返回的数据中是否包含 dishIds 数组
-        const dishIds = res.result.data && res.result.data.dishIds || [];
-        if (dishIds.length > 0) {
-          // 调用 cloudGetDishById 云函数获取所有菜品的详细信息
-          wx.cloud.callFunction({
-            name: 'cloudGetDishById',
-            data: { dishIds: dishIds }, // 传入 dishIds 数组
-            // 云函数调用成功后的回调
-            success: dishRes => {
-              if (dishRes.errMsg === 'cloud.callFunction:ok') {
-                // 处理成功获取的菜品数据
-                const dishesData = dishRes.result.data;
-                console.log("云函数cloudGetDishById返回的结果result.data:", dishesData);
-                that.setData({
-                  currentMealDishes: dishesData
-                });
-                console.log("currentMealDishes:", that.data.currentMealDishes);
-              } else {
-                console.error('cloudGetDishById 云函数调用失败:', dishRes.errMsg);
-              }
-            },
-            fail: err => {
-              console.error('cloudGetDishById 调用失败:', err);
+      if (res.errMsg === 'cloud.callFunction:ok' && res.result.data && res.result.data.dishIds.length > 0) {
+        // 获取所有的菜品信息
+        wx.cloud.callFunction({
+          name: 'cloudGetDishById',
+          data: { dishIds: res.result.data.dishIds },
+          success: dishRes => {
+            if (dishRes.errMsg === 'cloud.callFunction:ok' && dishRes.result.data.length > 0) {
+              // 取第一个菜品的信息用于轮播图
+              const dishData = dishRes.result.data[0]; // 只取第一个菜品数据
+              const updatedDishes = that.data.recommendMealDishes.concat([{
+                dishImageUrl: dishData.dishImageUrl,
+                mealId: mealId,
+                mealName: (that.data.recommendedMeals.find(meal => meal._id === mealId) || {}).mealName || '默认团餐名称'
+              }]);
+              that.setData({
+                recommendMealDishes: updatedDishes // 更新轮播图的菜品数组
+              });
+              console.log("recommendMealDishes:",this.data.recommendMealDishes)
             }
-          });
-        } else {
-          console.log('没有找到菜品ID数组或数组为空');
-          // 可以更新页面数据，显示没有菜品信息
-          that.setData({
-            currentMealDishes: []
-          });
-        }
+          },
+          fail: err => {
+            console.error('cloudGetDishById 调用失败:', err);
+          }
+        });
       } else {
-        console.error('cloudGetMealOrders 云函数调用失败:', res.errMsg);
+        console.log('没有找到菜品ID数组或数组为空');
       }
     },
     fail: err => {
@@ -178,6 +197,8 @@ fetchDishImages: function(mealId) {
     }
   });
 },
+
+
 
 // ...
   // Add other methods here
@@ -219,7 +240,7 @@ fetchDishImages: function(mealId) {
     console.log("goToMealDetail函数收到团餐Id:", mealId);
     if (mealId) {
          wx.navigateTo({
-           url: '/pages/MealDetail/index?mealId=' + mealId,
+           url: '/pages/mealDetail/index?mealId=' + mealId + '&mode=view',
           success: function(res) {
             console.log('跳转成功');
             },
@@ -240,7 +261,7 @@ fetchDishImages: function(mealId) {
   createMeal: function() {
     const { mealName, date, deadline } = this.data;
     // Call cloud function to create meal
-    // Navigate to MealDetail page on success
+    // Navigate to mealDetail page on success
     wx.navigateTo({
       url: '/pages/createMeal/index',
     })
@@ -248,7 +269,7 @@ fetchDishImages: function(mealId) {
   //分享当前页面
   onShareAppMessage: function() {
     return {
-      title: '团餐助手',
+      title: '宴聚-多人共享点餐',
       path: '/pages/index/index',
       imageUrl: '/assets/yan-ju-meal.jpg'
     }

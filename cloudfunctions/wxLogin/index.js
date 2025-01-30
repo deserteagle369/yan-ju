@@ -1,7 +1,5 @@
 // 云函数：wxLogin.js
 const cloud = require('wx-server-sdk');
-
-// 初始化云环境
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV // 表示在当前云环境中操作
 });
@@ -21,10 +19,13 @@ exports.main = async (event, context) => {
   }
 
   try {
-    // 调用微信的 wxaCode2Session 接口换取 openid 和 session_key
+    // 构造请求微信服务器的URL
+    const url = `https://api.weixin.qq.com/sns/jscode2session`;
+
+    // 发送请求到微信服务器
     const wxaCode2SessionRes = await cloud.httpclient.request({
-      url: `https://api.weixin.qq.com/sns/jscode2session`,
-      method: 'GET',
+      url: url,
+      method: 'POST',
       data: {
         appid: APPID,
         secret: SECRET,
@@ -33,18 +34,19 @@ exports.main = async (event, context) => {
       }
     });
 
-    const { openid, errcode } = wxaCode2SessionRes.data;
+    const { data } = wxaCode2SessionRes;
+    const { openid, errcode } = data;
 
     if (errcode === 0) {
       // 微信接口调用成功，openid获取成功
       // 这里可以进行后续的用户信息保存等操作
       // 例如，保存用户的openid到云数据库
-      const newNickname = `用户${user.openid.slice(-3)}`;
+      const newNickname = `用户${openid.slice(-3)}`;
       const saveResult = await db.collection('users').doc(openid).set({
         data: {
           // 这里可以添加其他需要保存的用户信息
           openid,
-          nickname:newNickname
+          nickname: newNickname
         }
       });
 

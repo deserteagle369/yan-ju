@@ -1,14 +1,16 @@
+/* pages/mealDetail/index.wxss */
 /* 容器样式 */
-.container {
+.page-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 5px;
-}
-
-/* 返回按钮样式 */
-.back-btn-area {
-  margin-bottom: 20px;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: auto;
 }
 /* 轮播图样式 */
 .meal-swiper {
@@ -34,11 +36,12 @@
 .meal-info {
   display: flex;
   background: #f0f0f0;
-  padding: 15px;
-  font-size: 12px;
+  padding: 5px;
+  font-size: 16px;
   justify-content: space-between;
   text-align: center;
   align-items: center;
+  width: 100%;
 }
 .meal-name,
 .meal-date,
@@ -54,10 +57,12 @@
   width: 100%; /* 或者其他您希望的宽度 */
   max-width: 800px; /* 您可以设置一个最大宽度 */
   margin: 0 auto; /* 如果需要居中显示 */
+  padding-bottom: 20px; /* 为底部浮动栏预留空间 */
+  overflow-y: auto; /* 如果内容很多需要滚动，确保设置了滚动 */
 }
 .list-dish-item {
-  margin: 5px;
-  padding: 10px;
+  margin: 2px 5px 2px 5px; /* 减少间隔 */
+  padding: 5px;
   display: flex;
   align-items: center;
   padding: 10px 0;
@@ -107,6 +112,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 110px; /* 设置一个最小宽度，确保即使没有加减按钮也保持布局 */
 }
 .quantity-btn {
   width: 24px; /* 图标宽度 */
@@ -115,6 +121,8 @@
 }
 .list-quantity {
   margin: 0 5px;
+  min-width: 20px; /* 为数量设置最小宽度，确保对齐 */
+  text-align: center; /* 文字居中显示 */
 }
 
 .list-dish-avatar {
@@ -123,6 +131,7 @@
   border-radius: 50%;
   margin-right: 5px;
 }
+
 
 /* 搜索框及搜索图标样式 */
 .search-box {
@@ -186,10 +195,13 @@
 
 /* 如果需要为容器内部的元素添加样式，可以继续添加如下示例 */
 .add-dishes-container .title {
+  color: #333333;
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
   text-align: center;
+  border: solid 1px grey;
+  border-radius: 5px;
 }
 
 .add-dishes-container .description {
@@ -198,7 +210,8 @@
   margin-bottom: 0px;
 }
 
-.add-dishes-container .action-button {
+.add-dishes-container button {
+  width: 120px;
   /* 样式定义 */
 }
 /* 标签栏样式 */
@@ -222,6 +235,9 @@
   font-weight: bold;
 }
 
+.search-dishes-display {
+  padding-bottom: 40px; /* 增加足够的底部内边距，80px是一个示例值，您可以根据按钮的高度进行调整 */
+}
 /* 根据当前筛选模式展示内容的容器样式 */
 .search-result-area,
 .category-selection-area {
@@ -274,6 +290,12 @@
   max-width: 20px;
 }
 
+.no-results {
+  text-align: center;
+  padding: 20px;
+}
+
+
 /* 将“添加到本餐”文字按钮改为图标按钮 */
 .add-to-meal-btn-icon {
   position:  relative;
@@ -285,4 +307,97 @@
 .add-to-meal-btn-icon image {
   width: 32px;
   height: 32px;
+}
+
+
+
+
+/* 容器样式，使用Flex布局 */
+.container {
+  display: flex;
+  flex-direction: row; /* 水平布局 */
+  width: 100%; /* 容器宽度100% */
+  height: 100%; /* 高度自动适应 */
+}
+
+/* 左侧分类选择器样式 */
+.category-selector {
+  width: 80px; /* 分类选择器固定宽度 */
+  height: 100vh; /* 高度与视口相同 */
+  overflow-y: auto; /* 内容超出时垂直滚动 */
+  border-right: 1px solid #ccc; /* 右侧边框 */
+  display: flex;
+  align-items: flex-start; /* 确保内容从顶部开始对齐 */
+}
+
+/* 滚动视图样式 */
+.scroll-view-category {
+  width: 100%; /* 宽度100% */
+  height: 100%; /* 高度100% */
+}
+
+/* 分类项目样式 */
+.category-item {
+  padding: 5px; /* 内边距 */
+  white-space: nowrap; /* 文本不换行 */
+  cursor: pointer; /* 鼠标指针 */
+}
+
+/* 激活状态样式 */
+.category-item.active {
+  background-color: #007aff; /* 激活背景色 */
+  color: white; /* 文字颜色 */
+}
+
+
+/* 右侧菜品显示区样式 */
+.category-dishes-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: calc(100% - 80px); /* 宽度减去分类选择器宽度 */
+  height: 100vh; /* 高度与视口相同 */
+  overflow-y: auto; /* 内容超出时垂直滚动/* 确保内容从顶部开始对齐，而不是居中 */
+  width: 100%; /* 根据需要调整宽度 */
+  padding: 10px;
+  overflow-y: auto; /* 允许内容溢出时滚动 */
+  padding-bottom: 140px; /* 增加足够的底部内边距，80px是一个示例值，您可以根据按钮的高度进行调整 */
+  overflow-y: auto; /* 如果内容很多需要滚动，确保设置了滚动 */
+}
+
+.float-button-container {
+  position: fixed;  /* 固定位置 */
+  bottom: 60px;      /* 底部对齐 */
+  left: 0;          /* 左侧对齐 */
+  width: 100%;      /* 容器宽度为100% */
+  padding: 0px;    /* 内边距 */
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 1000;    /* 确保按钮在最上层 */
+  display: flex;    /* 使用Flexbox布局 */
+  justify-content: space-around; /* 水平居中 */
+  align-items: center;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #eee;
+}
+.float-button-container button {
+  background-color: #53da69;
+  width: 120px;
+}
+
+#floating-bar {
+    background-color: #53da69; /* Set a white background color */
+    position: fixed; /* Ensure it stays at the bottom */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+.button-container {
+    position: fixed; /* 固定按钮栏 */
+    bottom: 0px; /* 根据浮动栏的高度调整 */
+    left: 0;
+    right: 0;
+    z-index: 1000; /* 确保它在浮动栏之上 */
+    margin-bottom: 0px; /* 增加底部间距 */
 }

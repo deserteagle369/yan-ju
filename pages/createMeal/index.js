@@ -1,83 +1,132 @@
+// pages/createMeal/index.js
+const app = getApp();
+const base = require('../../utils/language.js')
+const _ = base._
 Page({
   data: {
     mealName: '',
-    date: '',
-    deadline: '',
-    status:"ongoing"
+    date: '', // 团餐日期
+    deadline: '', // 截止时间
+    mealTypes: ['早餐', '中餐', '晚餐', '夜宵'],
+    selectedMealTypeIndex: 2, // 默认为晚餐
+    _t: '',
   },
-  onLoad: function() {
-    const now = new Date(); // Get the current date and time
-    const defaultDate = this.formatDate(now); // Format it as a string
-    const defaultDeadline = this.formatTime(new Date(now.getTime() + 1 * 60 * 60 * 1000)); // Add one hour for the default deadline
 
+  onLoad: function(options) {
+    this.mixinFn();
+    wx.setNavigationBarTitle({
+      title: _('创建团餐')
+    })
+    const app = getApp();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateString = `${tomorrow.getFullYear()}-${('0' + (tomorrow.getMonth() + 1)).slice(-2)}-${('0' + tomorrow.getDate()).slice(-2)}`;
     this.setData({
-      date: defaultDate,
-      deadline: defaultDeadline,
+        date: dateString,
+        mealName: dateString + ' 晚餐',
     });
   },
 
-  formatDate: function(date) {
-    // Formats a Date object into a date string of the format 'YYYY-MM-DD'
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; // getMonth() returns a zero-based index
-    const day = date.getDate();
-
-    return [year, month, day].map(this.formatNumber).join('-');
+  refresh() {
+    this.onLoad()
   },
-
-  formatTime: function(date) {
-    // Formats a Date object into a time string of the format 'HH:MM'
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    return [hours, minutes].map(this.formatNumber).join(':');
+  mixinFn() {
+    this.setData({
+      _t: base._t()
+    })
   },
-
-  formatNumber: function(n) {
-    // Formats a number into a two-digit string (e.g., '09' instead of '9')
-    n = n.toString();
-    return n[1] ? n : '0' + n;
-  },
-  inputMealName: function(e) {
-    this.setData({ mealName: e.detail.value });
-  },
+  // 当用户选择日期
   bindDateChange: function(e) {
-    this.setData({ date: e.detail.value });
-  },
+    const newDate = e.detail.value;
+    const mealType = this.data.mealTypes[this.data.selectedMealTypeIndex];
+    this.setData({
+        date: newDate,
+        mealName: newDate + ' ' + mealType
+    });
+},
+
+  // 当用户选择时间
   bindTimeChange: function(e) {
-    this.setData({ deadline: e.detail.value });
+    this.setData({
+        deadline: e.detail.value
+    });
+},
+
+  // 当用户选择团餐类型
+  bindMealTypeChange: function(e) {
+    const newMealTypeIndex = e.detail.value;
+    const newMealType = this.data.mealTypes[newMealTypeIndex];
+    this.setData({
+        selectedMealTypeIndex: newMealTypeIndex,
+        mealName: this.data.date + ' ' + newMealType
+    });
   },
+
+  // 当用户输入团餐名称
+  inputMealName: function(event) {
+    this.setData({
+      mealName: event.detail.value
+    });
+  },
+
+  clearInput: function() {
+    this.setData({
+        mealName: ''
+    });
+  },
+
+  // 创建团餐的函数
   createMeal: function() {
-    // 验证输入数据
-    if (!this.data.mealName || !this.data.date || !this.data.deadline) {
+    const app = getApp();
+    const openid = app.globalData.openid; // 获取用户的openid
+    const { mealName, date, deadline, mealType } = this.data;
+  
+    if (!mealName || !date || !deadline) {
       wx.showToast({
-        title: '请填写所有信息',
+        title: '请填写完整的团餐信息',
         icon: 'none',
         duration: 2000
       });
       return;
     }
-    // Logic to submit data to cloud database
-    const db = wx.cloud.database();
-    const mealData = {
-      mealName: this.data.mealName,
-      date: this.data.date,
-      deadline: this.data.deadline,
-      status: 'ongoing',
-      _openid: this.data._openid, // 假设您已经从某处获取了当前用户的_openid
-      mealRate: 0 // 初始化评分为 null
-
-      // You can add more fields according to your need
-    };
-
-    // Add new meal information to cloud database,if success then navigate to meal detail page
-    db.collection('meals').add({
-      data: mealData,
-    }).then(res => {
-      wx.navigateTo({
-        url: '../MealDetail/index?id=' + res._id,
-      });
-    }).catch(console.error);
-
-  },
+  
+    wx.cloud.callFunction({
+      name: 'cloudCreateMeal',
+      data: {
+        openid: openid, // 包含openid以确定创建者
+        mealName: mealName,
+        date: date,
+        deadline: deadline,
+        mealType: mealType,
+        status: 'ongoing' // 默认状态为进行中
+      },
+      success: res => {
+        if (res.result && res.result.success) {
+          wx.showToast({
+            title: '团餐创建成功',
+            icon: 'success',
+            duration: 2000
+          });
+          // 可以选择重定向到首页或团餐详情页
+          wx.redirectTo({
+            url: '/pages/mealDetail/index?mealId=' + res.result.mealId
+          });
+        } else {
+          wx.showToast({
+            title: '创建失败: ' + (res.result.error || '未知错误'),
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      },
+      fail: err => {
+        console.error('调用创建团餐云函数失败:', err);
+        wx.showToast({
+          title: '网络错误，创建失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    });
+  }
 });

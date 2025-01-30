@@ -1,51 +1,48 @@
-<!-- 顶部轮播图 -->
-<swiper class="meal-swiper" autoplay="true" interval="5000" circular="true">
-  <block wx:for="{{mealDetail.dishes}}" wx:key="_id">
-    <swiper-item>
-      <image src="{{item.dishImageUrl}}" class="swiper-image" />
-      <text class="swiper-dish-name">{{item.dishName}}</text>
-    </swiper-item>
-  </block>
-</swiper>
-<!-- 团餐信息 -->
-<view class="meal-info">
-  <text class="meal-date">{{mealDetail.date}}</text>
-  <text class="meal-name">{{mealDetail.mealName}}</text>
-  <text class="meal-deadline">截止：{{mealDetail.deadline}}</text>
-  <text class="meal-dish-count">{{dishCount}}菜</text>
-  <text class="meal-participant-count">{{participantCount}}人</text>
-</view>
+<!-- pages/mealDetail/index.wxml -->
 
-<!-- 菜品列表 -->
-<view class="dishes-list">
-  <block wx:for="{{dishes}}" wx:key="_id" data-index="{{index}}">
-    <view class="list-dish-item">
-      <image class="list-dish-img" src="{{item.dishImageUrl}}" />
-      <view class="list-dish-info">
-        <text class="list-dish-selected-category">{{item.selectedDishCategory}}</text>
-        <text class="list-dish-name">{{item.dishName}}</text>
-        <text class="list-dish-spicy-level">{{item.selectedSpicyLevel}}</text>
-        <text class="list-dish-cook-time">{{item.time}}</text>
-        <!-- 加号和减号图标 -->
-        <view class="list-quantity-control">
-          <image src="/images/minus.png" class="quantity-btn" bindtap="decreaseQuantity" data-dish-id="{{item._id}}"/>
-          <text class="list-quantity">{{item.dishQuantity}}</text>
-          <image src="/images/add.png" class="quantity-btn" bindtap="increaseQuantity" data-dish-id="{{item._id}}"/>
-        </view>
-        <text class="added-by">{{item.addedBy}}</text>
-      </view>
+<view class="page-container">
+    <!-- 团餐信息 -->
+    <view class="meal-info">{{_t['团餐']}}
+      <text class="meal-date">{{mealDetail.date}}</text>
+      <text class="meal-name">{{mealDetail.mealName}}</text>
+      <text class="meal-deadline">{{_t['截止时间：']}}{{mealDetail.deadline}}</text>
+      <text class="meal-dish-count">{{dishCount}}{{_t['菜']}}</text>
+      <text class="meal-participant-count">{{participantCount}}{{_t['人']}}</text>
     </view>
-  </block>
-</view>
+
+    <!-- 菜品列表 -->
+    <view class="dishes-list">
+      <block wx:for="{{dishes}}" wx:key="_id" data-index="{{index}}">
+        <view class="list-dish-item">
+          <image class="list-dish-img" src="{{item.dishImageUrl}}" />
+          <view class="list-dish-info">
+            <text class="list-dish-selected-category">{{item.selectedDishCategory}}</text>
+            <text class="list-dish-name" bindtap="onDishSelected" data-dish-id="{{item._id}}">{{item.dishName}}</text>
+            <text class="list-dish-spicy-level">{{item.selectedSpicyLevel}}</text>
+            <text class="list-dish-cook-time">{{item.time}}</text>
+            <!-- 加号和减号图标 -->
+            <view class="list-quantity-control">
+              <image src="/images/minus.png" class="quantity-btn" wx:if="{{mealDetail.status !== 'ended'}}" bindtap="decreaseQuantity" data-dish-id="{{item._id}}"/>
+              <text class="list-quantity">{{item.dishQuantity}}</text>
+              <image src="/images/add.png" class="quantity-btn" wx:if="{{mealDetail.status !== 'ended'}}" bindtap="increaseQuantity" data-dish-id="{{item._id}}"/>
+            </view>
+            <text class="added-by">{{item.addedBy}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <view wx:if="{{mealDetail.status === 'ongoing' && (isParticipant || mealDetail._openid === openid)}}">
+      <button class="yan-ju-btn" bindtap="endMeal">{{_t['截止点菜']}}</button>
+    </view>
 
     <!-- 新增菜品部分 -->
-    
-    <view class="add-dishes-container">
-      <view class="title">加菜</view>
+    <view wx:if="{{mealDetail.status === 'ongoing'}}" class="add-dishes-container">
+      <view class="title">{{_t['加菜']}}</view>
         <!-- 标签页 -->
         <view class="filter-tabs">
-            <view class="filter-tab {{currentFilter === 'search' ? 'active' : ''}}" data-filter="search" bindtap="switchFilter">搜索菜品</view>
-            <view class="filter-tab {{currentFilter === 'category' ? 'active' : ''}}" data-filter="category" bindtap="switchFilter">按分类筛选</view>
+            <view class="filter-tab {{currentFilter === 'search' ? 'active' : ''}}" data-filter="search" bindtap="switchFilter">{{_t['搜索菜品']}}</view>
+            <view class="filter-tab {{currentFilter === 'category' ? 'active' : ''}}" data-filter="category" bindtap="switchFilter">{{_t['按分类筛选']}}</view>
         </view>
 
         <!-- 根据当前筛选模式展示内容 -->
@@ -54,20 +51,20 @@
             <view wx:if="{{currentFilter === 'search'}}">
                 <!-- 搜索框 -->
                 <view class="search-box">
-                    <input class="search-input" placeholder="搜索菜品" value="{{searchKeyword}}" focus="{{isSearchFocused}}" bindinput="handleSearch"/>
+                    <input class="search-input" placeholder="{{_t['搜索菜品']}}" value="{{searchKeyword}}" focus="{{isSearchFocused}}" bindinput="handleSearch"/>
                     <view class="search-icon" bindtap="handleSearch">
                         <image src="../../images/search.png" />
                     </view>
                 </view>
                 <!-- 搜索结果展示区 -->
-                <view wx:if="{{showSearchResult}}">
+                <view class="search-dishes-display" wx:if="{{showSearchResult}}">
                   <view class="dishes-list">
                     <block wx:for="{{searchedDishes}}" wx:key="dishID">
                         <view class="list-dish-item">
                           <image class="list-dish-img" src="{{item.dishImageUrl}}"></image>
                           <view class="list-dish-info">
                             <view class="list-dish-selected-category">{{item.selectedDishCategory}}</view>                            
-                            <text class="list-dish-name">{{item.dishName}}</text>
+                            <text class="list-dish-name" bindtap="onDishSelected" data-dish-id="{{item._id}}">{{item.dishName}}</text>
                             <text class="list-dish-spicy-level">{{item.selectedSpicyLevel}}</text>
                             <text class="list-dish-cook-time">{{item.time}}</text>
                             <!-- 加号和减号图标 -->
@@ -81,32 +78,51 @@
                     </block>
                   </view>
                     <view wx:if="{{!hasSearchResult}}">
-                        <text>未找到相关菜品，您可以<a bindtap="redirectToDishLibrary">前往菜品库添加新菜品</a></text>
+                        <text>{{_t['未找到相关菜品']}}</text> 
+                        <button class="yan-ju-btn" bindtap="redirectToDishSummit">{{_t['添加新菜品']}}</button>
                     </view>
                 </view>
             </view>
 
             <!-- 按分类筛选内容 -->
-            <view wx:if="{{currentFilter === 'category'}}">
-                <!-- 菜品库类别筛选 -->
-                <view class="category-selector">分类选择
-                    <view wx:for="{{categories}}" wx:key="category">
-                        <view class="category" bindtap="selectCategory">{{category.name}}</view>
-                    </view>
-                </view>
+            <view class="container" wx:if="{{currentFilter === 'category'}}">
+              <!-- 左侧分类选择器 -->
+              <view class="category-selector">
+                <scroll-view scroll-y="true" class="scroll-view-category">
+                  <view wx:for="{{categories}}" wx:key="categoryName" bindtap="selectCategory" data-category-name="{{item}}" class="category-item {{selectedCategory === item ? 'active' : ''}}">{{item}}
+                  </view>
+                </scroll-view>
+              </view>
 
-                <!-- 根据所选类别展示菜品库 -->
-                <view class="dish-library">
-                    <view wx:for="{{filteredDishes}}" wx:key="dish">
-                        <view class="library-dish-item">
-                            <image class="dish-img" src="{{dish.imgUrl}}"/>
-                            <text class="dish-name">{{dish.name}}</text>
-                            <text>辣度：{{dish.spiciness}}</text>
-                            <text>烹饪时间：{{dish.cookingTime}}</text>
-                            <button class="add-dish-btn" bindtap="addToMeal">添加</button>
-                        </view>
+              <!-- 右侧菜品显示区，使用 'dishes-display' 类来应用样式 -->
+              <view class="category-dishes-display">
+                <view wx:for="{{filteredDishes}}" wx:key="dishId" class="list-dish-item">
+                  <image class="list-dish-img" src="{{item.dishImageUrl}}"/>
+                  <view class="list-dish-info">
+                    <text class="list-dish-name" bindtap="onDishSelected" data-dish-id="{{item._id}}">{{item.dishName}}</text>
+                    <text class="list-dish-spicy-level">{{item.selectedSpicyLevel}}</text>
+                    <text class="list-dish-cook-time">{{item.time}}</text>
+                    <!-- 加号和减号图标 -->
+                    <view class="list-quantity-control">
+                      <image src="/images/minus.png" class="quantity-btn" bindtap="decreaseQuantity" data-dish-id="{{item._id}}" wx:if="{{isDishInMeal(item._id)}}" />
+                      <text class="list-quantity" wx:if="{{item.dishQuantity > 0}}">{{item.dishQuantity}}</text>
+                      <image src="/images/add.png" class="quantity-btn" bindtap="increaseQuantity" data-dish-id="{{item._id}}"/>
                     </view>
+                  </view>
                 </view>
+              </view>
             </view>
         </view>
+
     </view>
+
+    <view id="floating-bar">
+        <!-- Floating bar content goes here -->
+    </view>
+</view>
+
+<view class="float-button-container">
+  <button open-type="share" class="yan-ju-btn" bindtap="onShareView">{{_t['分享查看']}}</button>
+  <button open-type="share" class="yan-ju-btn" bindtap="onInviteJoin" wx:if="{{canInvite}}">{{_t['邀请加菜']}}</button>
+  <button class="yan-ju-btn" bindtap="navigateToIngredients">{{_t['食材清单']}}</button>
+</view>

@@ -1,19 +1,34 @@
-  <view class="header" wx:if="{{isShowUserName}}">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" bindtap="updateAvatar"></image>
-    <text class="userinfo-nickname" bindtap="updateNickname">{{userInfo.nickName}}</text>
-    <text class="userinfo-nickname">id:{{shortenedOpenid}}</text>
-  </view>
- <!--如果用户没有授权，显示登录按钮  -->
-<view wx:if="{{!isShowUserName}}" class="btn-login">
-  <button open-type="getUserInfo" lang="zh_CN" type="primary" bindgetuserinfo="onGotUserInfo">授权登录</button>
-</view>
-<button wx:if="{{isShowUserName}}" bindtap="loginOut">退出登录</button>
-  <view class="meal-history">团餐
-  <block wx:for="{{meals}}" wx:key="index">
-    <view class="meal-item" bindtap="goToMealDetail" data-meal-id="{{item._id}}">
-      <text>日期：{{item.date}}</text>
-      <text>团餐：{{item.mealName}}</text>
-      <text>状态：{{item.status}}</text>
+<view class="container">
+<switchLanguage bindrefreshevent="refresh"></switchLanguage>
+  <view class="user-info" wx:if="{{hasUserInfo}}">
+    <view class="avatar-and-points">
+      <button open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image class="userinfo-avatar" mode="aspectFill" src="{{userInfo.avatarUrl || '../../images/default-avatar.png'}}"></image>
+      </button>
+      <text class="userinfo-points">{{_t['积分：']}}{{userInfo.points || 0}}</text>
     </view>
-  </block>
+    <view class="name-and-action">
+      <form bindsubmit="formsubmit">
+        <input type="nickname" class="userinfo-nickname" value="{{userInfo.nickName || '点击设置昵称'}}" name="nickname"/>
+      </form>
+    </view>
   </view>
+  
+  <!--如果用户没有授权，显示登录按钮 -->
+  <view wx:if="{{!hasUserInfo}}" class="btn-login">
+    <button class="yan-ju-btn" bindtap="onWeChatLogin">{{_t['微信登录']}}</button>
+  </view>
+  <button class="yan-ju-btn" wx:if="{{hasUserInfo}}" bindtap="loginOut">{{_t['退出登录']}}</button>
+  <view class="meal-list">{{_t['我的团餐']}}
+    <block wx:for="{{meals}}" wx:key="unique">
+      <view class="meal-item {{item.status === 'ended' ? 'grey-text' :''}}">
+        <view class="meal-info" bindtap="goToMealDetail" data-meal-id="{{item._id}}">
+          <text class="meal-date">{{item.date}}</text>
+          <text class="meal-name">{{item.mealName}}</text>
+          <text class="meal-status">{{item.status}}</text>
+        </view>
+        <image src="/images/delete.png" class="delete-icon" data-id="{{item._id}}" bindtap="deleteMeal"/>
+      </view>
+    </block>
+  </view>
+</view>

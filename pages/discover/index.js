@@ -1,66 +1,45 @@
 // pages/discover/index.js
+const base = require('../../utils/language.js')
+const _ = base._
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    weChatId: "zhang_jian_cn",  // 这里替换成你的微信号
+    _t: ''
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  onLoad: function(options) {
+    this.mixinFn();
+    wx.setNavigationBarTitle({
+      title: _('发现')
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  
+  refresh() {
+    this.onLoad()
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  mixinFn() {
+    this.setData({
+      _t: base._t()
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  // 复制微信号到剪贴板
+  copyWeChatId: function() {
+    wx.setClipboardData({
+      data: this.data.weChatId,
+      success: function() {
+        wx.showToast({
+          title: '微信号已复制',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      fail: function() {
+        wx.showToast({
+          title: '复制失败，请重试',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    });
   }
-})
+});

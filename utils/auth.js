@@ -1,14 +1,11 @@
 // utils/auth.js
 import { promisifyRequest } from '../utils/promisifyRequest'; // 假设有一个promisifyRequest函数用于将wx.request封装为Promise形式
 
-const APPID = 'wx82135acdebf65210';
-const SECRET = 'bf035ecfb3375386f64eb6a30c0978dc';
-
 export const login = async () => {
   try {
     const { code } = await promisifyRequest(wx.login);
     if (code) {
-      return exchangeCodeForOpenidAndSessionKey(code);
+      return callCloudFunction(code);
     } else {
       throw new Error('获取用户登录凭证失败');
     }
@@ -18,24 +15,23 @@ export const login = async () => {
   }
 };
 
-export const exchangeCodeForOpenidAndSessionKey = async (code) => {
-  const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${code}&grant_type=authorization_code`;
-
+export const callCloudFunction = async (code) => {
   try {
-    const response = await promisifyRequest(wx.request, {
-      url,
-      method: 'GET'
+    const result = await wx.cloud.callFunction({
+      name: 'wxLogin', // 确保这里的云函数名与你的云函数名称一致
+      data: { code }
     });
-    if (response.statusCode === 200 && response.data.errcode === 0) {
+    
+    if (result.result.success) {
       return {
-        openid: response.data.openid,
-        session_key: response.data.session_key
+        openid: result.result.openid,
+        message: result.result.message
       };
     } else {
-      throw new Error(`交换登录凭证code失败: ${response.data.errmsg}`);
+      throw new Error(result.result.message);
     }
   } catch (error) {
-    console.error('请求jscode2session接口失败', error);
+    console.error('调用云函数失败', error);
     throw error;
   }
 };

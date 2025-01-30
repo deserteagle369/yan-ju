@@ -1,4 +1,10 @@
 {
-  "navigationBarTitleText": "用户详情",
-  "usingComponents": {}
+  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationStyle": "default",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "cloud-tip-modal": "/components/cloudTipModal/index",
+    "switchLanguage": "/components/switchLanguage/index"
+  }
 }

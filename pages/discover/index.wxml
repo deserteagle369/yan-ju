@@ -1,2 +1,7 @@
 <!--pages/discover/index.wxml-->
-<text>pages/discover/index.wxml</text>
+<!--显示一个按钮，点击后可复制我的微信号-->
+<view class="container">
+{{_t['欢迎提出建议，请联系作者。']}}
+  <button class="yan-ju-btn  contact-btn" bindtap="copyWeChatId">{{_t['复制作者微信号']}}</button>
+</view>
+
