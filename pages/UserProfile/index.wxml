@@ -2,10 +2,10 @@
 <switchLanguage bindrefreshevent="refresh"></switchLanguage>
   <view class="user-info" wx:if="{{hasUserInfo}}">
     <view class="avatar-and-points">
-      <button open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <button class="userinfo-avatar" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
         <image class="userinfo-avatar" mode="aspectFill" src="{{userInfo.avatarUrl || '../../images/default-avatar.png'}}"></image>
       </button>
-      <text class="userinfo-points">{{_t['积分：']}}{{userInfo.points || 0}}</text>
+      <text class="yan-ju-btn">{{_t['积分：']}}{{userInfo.points || 0}}</text>
     </view>
     <view class="name-and-action">
       <form bindsubmit="formsubmit">

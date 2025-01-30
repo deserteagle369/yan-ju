@@ -38,3 +38,16 @@ page{
   -webkit-transform: rotate(-45deg);
 }
 
+.yan-ju-btn {
+  display: inline-block;
+  padding: 5px 20px;
+  text-align: center;
+  background-color: #fecf45;
+  color: black;
+  border-radius:50px;
+  margin: 5px 5px;
+  width: auto;
+  height: auto;
+  white-space: nowrap; /* 防止换行 */
+  flex:none;
+}

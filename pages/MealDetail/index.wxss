@@ -380,7 +380,7 @@
   border-top: 1px solid #eee;
 }
 .float-button-container button {
-  background-color: #53da69;
+  background-color: #fecf45;
   width: 120px;
 }
 

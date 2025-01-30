@@ -42,7 +42,7 @@
 
 .input-field:focus,
 .picker:focus {
-  border-color: #1cbbb4;
+  border-color: #fecf45;
 }
 
 .picker {
@@ -73,6 +73,6 @@
 }
 
 .radio-button.active {
-  background-color: #1cbbb4;
+  background-color: #fecf45;
   color: #fff;
 }

@@ -68,8 +68,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding-top: 40px; /* 确保内容不被导航栏遮挡 */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  height: auto;
 }
+
 .search-bar {
   margin: 10px;
 }

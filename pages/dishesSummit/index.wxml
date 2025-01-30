@@ -65,5 +65,5 @@
       </picker>
   </view>
   <!-- 提交按钮 -->
-  <button type="primary" bindtap="submitDish" disabled="{{!dishImageUrl}}">{{_t['提交菜品']}}</button>
+  <button class="yan-ju-btn" type="primary" bindtap="submitDish" disabled="{{!dishImageUrl}}">{{_t['提交菜品']}}</button>
 </view>

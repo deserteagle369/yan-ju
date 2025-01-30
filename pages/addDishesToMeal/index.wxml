@@ -5,7 +5,7 @@
   
   <!-- 搜索结果区域 -->
   <view wx:if="{{noResults}}">
-    <button type="primary" bindtap="redirectToSubmit">{{_t['添加菜品']}}</button>
+    <button class="yan-ju-btn" type="primary" bindtap="redirectToSubmit">{{_t['添加菜品']}}</button>
   </view>
   <scroll-view wx:else>
     <!-- 菜品分类 -->
@@ -19,7 +19,7 @@
               <text class="dish-name">{{dish.name}}</text>
               <text class="dish-spicy">{{dish.spiciness}}</text>
               <text class="dish-cooktime">{{dish.cookingTime}}</text>
-              <button class="add-dish-button" bindtap="addDishToMeal">{{_t['加入团餐']}}</button>
+              <button class="yan-ju-btn" bindtap="addDishToMeal">{{_t['加入团餐']}}</button>
             </view>
           </block>
         </view>

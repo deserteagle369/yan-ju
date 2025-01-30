@@ -61,7 +61,7 @@
   margin-bottom: 5rpx; /* 统一其他信息的底部间距 */  
 }  
   
-.edit-button {
+button {
   background-color: #FF6A00;
   color: white;
   border-radius: 4px;
@@ -73,11 +73,11 @@
   text-align: center;
 }
 
-.edit-button:hover {
+button:hover {
   background-color: #FF8C00;
 }
 
-.edit-button:disabled {
+button:disabled {
   background-color: #CCCCCC;
   cursor: not-allowed;
 }

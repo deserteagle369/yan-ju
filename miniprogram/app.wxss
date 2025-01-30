@@ -27,15 +27,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-button:focus{
-  outline: 0;
-}
-
-button::after{
-  border: none;
-}
-
-
 page {
   background: #f6f6f6;
   display: flex;

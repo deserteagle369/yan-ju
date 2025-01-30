@@ -4,9 +4,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Full height of the viewport */
   padding: 20px;
-  background-color: #f8f8f8; /* Light gray background */
+  height: auto;
 }
 
 /* Styles for the input fields */

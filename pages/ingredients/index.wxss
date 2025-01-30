@@ -92,25 +92,38 @@
     align-items: center;
     justify-content: space-between;
   }
-  /* 根据需要调整按钮样式 */
+  /* 美团小程序按钮网格样式 */
 button {
-  background-color: #FF6A00;
-  color: white;
-  border-radius: 4px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 14px;
+  padding-right: 14px;
+  box-sizing: border-box;
+  font-size: 18px;
   text-align: center;
+  text-decoration: none;
+  line-height: 2.55555556;
+  border-radius: 5px;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  color: #fff;
+  white-space: nowrap;
+  background-color: #ff9900;
+  border-width: 0;
+  border-style: solid;
+  will-change: background-color, border-color;
+  -webkit-transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
 }
 
 button:hover {
-  background-color: #FF8C00;
+  background-color: #ffad33;
 }
 
 button:disabled {
-  background-color: #CCCCCC;
+  background-color: #ccc;
   cursor: not-allowed;
 }
   checkbox {

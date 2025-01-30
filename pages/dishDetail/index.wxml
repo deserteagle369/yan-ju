@@ -23,5 +23,5 @@
         </view>
     </view> 
   <!-- 编辑按钮，只有创建者可见 -->
-  <button type="primary" class="edit-button" wx:if="{{isOwner}}" bindtap="editDish">{{_t['编辑菜品']}}</button>   
+  <button class="yan-ju-btn" type="primary" wx:if="{{isOwner}}" bindtap="editDish">{{_t['编辑菜品']}}</button>   
 </view>

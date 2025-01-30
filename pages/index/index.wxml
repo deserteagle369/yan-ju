@@ -29,7 +29,7 @@
       </view>
     </view>
   </view>
-  <button class="create-meal-btn" bindtap="createMeal">{{_t['创建团餐']}}</button>
+  <button class="yan-ju-btn" bindtap="createMeal">{{_t['创建团餐']}}</button>
 
   <view class="search-bar">
     <input class="search-input" placeholder="{{_t['搜索团餐名称']}}" bindinput="onInputChange" value="{{searchKeyword}}"/>

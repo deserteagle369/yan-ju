@@ -2,9 +2,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  align-items: center;
+  padding: 20px;
+  height: 100vh;
   background-color: #f8f8f8;
 }
 
@@ -29,7 +30,7 @@
 }
 
 /* General button styling, can be reused for other purposes */
-.button {
+button {
   background-color: #FF6A00;
   color: white;
   border-radius: 4px;
@@ -41,11 +42,11 @@
   text-align: center;
 }
 
-.button:hover {
+button:hover {
   background-color: #FF8C00;
 }
 
-.button:disabled {
+button:disabled {
   background-color: #CCCCCC;
   cursor: not-allowed;
 }
