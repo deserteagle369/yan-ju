@@ -5,7 +5,6 @@
     "pages/dishes/index",
     "pages/register/login",
     "pages/register/bindPhone",
-    "pages/testLogin/index",
     "pages/family/index",
     "pages/dishSummit/index",
     "pages/dishDetail/index",
@@ -21,18 +20,6 @@
     "pages/Feedback/index",
     "pages/getOpenId/index",
     "pages/getMiniProgramCode/index",
-    "pages/deployService/index",
-    "pages/createCollection/index",
-    "pages/uploadFile/index",
-    "pages/selectRecord/index",
-    "pages/updateRecord/index",
-    "pages/updateRecordResult/index",
-    "pages/updateRecordSuccess/index",
-    "pages/sumRecord/index",
-    "pages/sumRecordResult/index",
-    "pages/cloudBackend/index",
-    "pages/singleTemplate/index",
-    "pages/web/index",
     "pages/setting/setting",
     "pages/cropper/cropper"
   ],
@@ -51,10 +38,10 @@
         "selectedIconPath": "images/discover-selected.png"
       },
       {
-        "pagePath": "pages/dishes/index",
-        "text": "菜品",
-        "iconPath": "images/dishes.png",
-        "selectedIconPath": "images/dishes-selected.png"
+        "pagePath": "pages/ingredients/index",
+        "text": "食材",
+        "iconPath": "images/ingredients.png",
+        "selectedIconPath": "images/ingredients-selected.png"
       },
       {
         "pagePath": "pages/UserProfile/index",

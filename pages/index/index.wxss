@@ -121,11 +121,11 @@
 }
 /* 根据星级选择图标颜色 */
 .star-gold {
-  image: url('/images/star-gold.png');
+  background-image: url('/images/star-gold.png');
 }
 
 .star-grey {
-  image: url('/images/star-gray.png');
+  background-image: url('/images/star-gray.png');
 }
 
 .create-meal-btn {

@@ -568,7 +568,7 @@ Page({
     console.log("启动navigateToIngredients函数,参数为:",this.data.mealId);
 
     wx.navigateTo({
-      url: '/pages/ingredients/index?mealId=' + this.data.mealId,  // 假设食材清单页面的路径是这样的
+      url: '/pages/ingredientsList/index?mealId=' + this.data.mealId,  // 假设食材清单页面的路径是这样的
       success: function(res) {
         console.log('跳转到食材清单页面成功');
       },

@@ -1,0 +1,35 @@
+<!--pages/ingredientsList/index.wxml-->
+<view class="container">
+    <view class="top-bar">
+        <view class="yan-ju-btn" bindtap="navigateToMealDetail">{{_t['团餐详情']}}</view>
+    </view>
+    <view class="ingredients-list">
+        <block wx:for="{{ingredients}}" wx:key="index">
+            <view class="ingredient-item">
+                <text class="ingredient-info">{{item.category}} > {{item.subcategory}} > {{_t[item.name]}}</text>
+                <view class="quantity-control">
+                    <image wx:if="{{isChef}}" src="/images/minus.png" class="quantity-btn" bindtap="decreaseIngredient" data-id="{{item.id}}" />
+                    <text class="quantity-text">{{item.quantity}}</text>
+                    <image wx:if="{{isChef}}" src="/images/add.png" class="quantity-btn" bindtap="increaseIngredient" data-id="{{item.id}}" />
+                    <picker wx:if="{{isChef}}" mode="selector" value="{{item.unitIndex}}" range="{{units}}" bindchange="onUnitChange" data-id="{{item.id}}" data-index="{{index}}">
+                        <view class="unit-picker">{{_t[item.unit]}}</view>
+                    </picker>
+                    <text wx:if="{{!isChef}}" class="unit-text">{{_t[item.unit]}}</text>
+                </view>                          
+            </view>            
+        </block>
+    </view>
+    <!-- 固定在底部的按钮 -->
+    <view class="fixed-bottom-actions">
+        <view class="bottom-actions" wx:if="{{isCreator}}">
+            <button class="yan-ju-btn" bindtap="shareToChef" data-type="shareToChef" open-type="share">{{_t['分享给厨师']}}</button>
+        </view>
+        <view class="bottom-actions" wx:if="{{isChef}}">
+            <button class="yan-ju-btn" bindtap="saveIngredients">{{_t['保存食材清单']}}</button>
+            <view class="generate-purchase-list">
+                <checkbox bindchange="toggleIncludeZeroQuantity">{{_t['包含数量为0的食材']}}</checkbox>
+                <button class="yan-ju-btn" bindtap="viewPurchaseList">{{_t['查看采购清单']}}</button>
+            </view>
+        </view>
+    </view>
+</view>
